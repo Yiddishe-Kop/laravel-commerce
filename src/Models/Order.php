@@ -15,10 +15,6 @@ class Order extends Model {
   ];
   public $timestamps = false;
 
-  public function cartItems() {
-    return $this->hasMany(OrderItem::class);
-  }
-
   public function orderItems() {
     return $this->hasMany(OrderItem::class);
   }

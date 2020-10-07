@@ -5,6 +5,13 @@ use YiddisheKop\LaravelCommerce\Gateways\Takbull;
 
 return [
 
+  'currency' => 'USD',
+
+  'tax' => [
+    'rate'               => 20,
+    'included_in_prices' => false,
+  ],
+
   /*
   |--------------------------------------------------------------------------
   | Payment Gateways

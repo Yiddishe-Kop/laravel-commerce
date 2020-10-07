@@ -7,8 +7,8 @@ use YiddisheKop\LaravelCommerce\Tests\Models\Product;
 
 class CartTest extends TestCase {
 
-  private $cart;
-  private $product;
+  private Order $cart;
+  private Product $product;
 
   public function setUp(): void {
     parent::setUp();
@@ -33,7 +33,7 @@ class CartTest extends TestCase {
   /** @test */
   public function it_can_add_products_to_the_cart() {
 
-    $this->cart->addItem($this->product);
+    $this->cart->add($this->product);
 
     $this->assertEquals(1, $this->cart->cartItems()->count());
   }
@@ -41,7 +41,7 @@ class CartTest extends TestCase {
   /** @test */
   public function it_can_update_cart_item_data() {
 
-    $this->cart->addItem($this->product);
+    $this->cart->add($this->product);
     $cartItem = $this->cart->cartItems->first();
 
     $this->assertEquals(1, $cartItem->quantity);
@@ -55,7 +55,7 @@ class CartTest extends TestCase {
   /** @test */
   public function it_can_remove_products_from_the_cart() {
 
-    $this->cart->removeItem($this->product->id);
+    $this->cart->remove($this->product->id);
 
     $this->assertEquals(0, $this->cart->cartItems()->count());
   }
