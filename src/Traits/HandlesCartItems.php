@@ -5,27 +5,29 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
-trait InteractsWithCartItems {
+trait HandlesCartItems {
 
   public function cartItems() {
     return $this->hasMany(OrderItem::class);
   }
 
-  public function add(Purchasable $product, int $quantity = 1) {
-    return $this->orderItems()->create([
+  public function add(Purchasable $product, int $quantity = 1): self {
+    $this->orderItems()->create([
       'model_id' => $product->id,
       'model_type' => get_class($product),
       'title' => $product->getTitle(),
       'price' => $product->getPrice(),
       'quantity' => $quantity,
     ]);
+    return $this;
   }
 
-  public function remove(int $id) {
-    return OrderItem::where('model_id', $id)->delete();
+  public function remove(int $id): self {
+    OrderItem::where('model_id', $id)->delete();
+    return $this;
   }
 
-  public function calculateTotals() {
+  public function calculateTotals(): self {
     $itemsTotal = $this->cartItems->sum(fn ($item) => $item->price * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
@@ -36,5 +38,7 @@ trait InteractsWithCartItems {
       'tax_total' => $taxTotal,
       'grand_total' => $grandTotal,
     ]);
+    return $this;
   }
+
 }

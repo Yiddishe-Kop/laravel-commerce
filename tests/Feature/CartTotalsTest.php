@@ -14,14 +14,15 @@ class CartTotalsTest extends TestCase {
 
     $this->cart = Order::create();
 
-    $this->cart->add(Product::create([
-      'title' => 'BA Ziporen',
-      'price' => 333
-    ]), 2);
-    $this->cart->add(Product::create([
-      'title' => 'BA Vilna',
-      'price' => 444
-    ]), 5);
+    $this->cart
+      ->add(Product::create([
+        'title' => 'BA Ziporen',
+        'price' => 333
+      ]), 2)
+      ->add(Product::create([
+        'title' => 'BA Vilna',
+        'price' => 444
+      ]), 5);
 
   }
 
