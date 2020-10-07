@@ -1,11 +1,18 @@
-# Very short description of the package
+# A simple commerce package for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
-[![Build Status](https://img.shields.io/travis/yiddishe-kop/laravel-commerce/master.svg?style=flat-square)](https://travis-ci.org/yiddishe-kop/laravel-commerce)
-[![Quality Score](https://img.shields.io/scrutinizer/g/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://scrutinizer-ci.com/g/yiddishe-kop/laravel-commerce)
 [![Total Downloads](https://img.shields.io/packagist/dt/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+After searching for a simple ecommerce package for Laravel and not finding a lightweight simple to use solution - I decided to attempt to create one myself.
+
+### Features
+
+- [ ] Cart (stored in the session - so guests can have a cart)
+- [ ] Orders
+- [ ] Coupons
+- [ ] Payment Gateways
+
+This package only implements the backend logic, and leaves you full control over the frontend.
 
 ## Installation
 
@@ -47,7 +54,3 @@ If you discover any security related issues, please email yehuda@yiddishe-kop.co
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
