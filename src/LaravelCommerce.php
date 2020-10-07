@@ -9,6 +9,8 @@ class LaravelCommerce {
   protected static $gateways = [];
 
   public static function bootGateways() {
+    static::$gateways = [];
+
     foreach (config('commerce.gateways') as $class => $config) {
       if ($class) {
         $class = str_replace('::class', '', $class);

@@ -15,9 +15,9 @@ class Takbull implements Gateway {
     return [];
   }
 
-  public function purchase(array $data, $request): array {
+  public function purchase(array $data, $request) {
     // perform the purchase
-    return [];
+    return 'Purchased with Credit Card!';
   }
 
   public function purchaseRules(): array {

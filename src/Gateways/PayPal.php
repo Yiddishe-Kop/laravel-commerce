@@ -15,9 +15,9 @@ class PayPal implements Gateway {
     return [];
   }
 
-  public function purchase(array $data, $request): array {
+  public function purchase(array $data, $request) {
     // perform the purchase
-    return [];
+    return 'Purchased with PayPal!';
   }
 
   public function purchaseRules(): array {
