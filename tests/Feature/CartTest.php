@@ -33,14 +33,23 @@ class CartTest extends TestCase {
   /** @test */
   public function it_can_add_products_to_the_cart() {
 
-    $cart = Order::first();
-    $cart->cartItems()->create([
-      'model_id' => $this->product->id,
-      'model_type' => Product::class,
-      'total' => $this->product->price
-    ]);
+    $this->cart->addItem($this->product);
 
-    $this->assertEquals(1, $cart->cartItems()->count());
+    $this->assertEquals(1, $this->cart->cartItems()->count());
+  }
+
+  /** @test */
+  public function it_can_update_cart_item_data() {
+
+    $this->cart->addItem($this->product);
+    $cartItem = $this->cart->cartItems->first();
+
+    $this->assertEquals(1, $cartItem->quantity);
+
+    $cartItem->update([
+      'quantity' => 3
+    ]);
+    $this->assertEquals(3, $cartItem->quantity);
   }
 
   /** @test */
