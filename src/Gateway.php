@@ -4,7 +4,7 @@ namespace YiddisheKop\LaravelCommerce;
 
 use Illuminate\Support\Str;
 
-class LaravelCommerce {
+class Gateway {
 
   protected static $gateways = [];
 

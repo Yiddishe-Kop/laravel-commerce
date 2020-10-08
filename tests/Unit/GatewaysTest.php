@@ -2,14 +2,14 @@
 
 namespace YiddisheKop\LaravelCommerce\Tests;
 
-use YiddisheKop\LaravelCommerce\LaravelCommerce;
+use YiddisheKop\LaravelCommerce\Gateway;
 
 class GatewaysTest extends TestCase {
 
   private $gateways;
 
   public function setUp(): void {
-    $this->gateways = LaravelCommerce::gateways();
+    $this->gateways = Gateway::gateways();
   }
 
   /** @test */

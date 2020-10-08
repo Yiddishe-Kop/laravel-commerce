@@ -1,6 +1,6 @@
 <?php
 
-namespace YiddisheKop\LaravelCommerce\Tests\Models;
+namespace YiddisheKop\LaravelCommerce\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;

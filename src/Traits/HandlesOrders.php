@@ -7,10 +7,6 @@ use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HandlesOrders {
 
-  public function orderItems() {
-    return $this->hasMany(OrderItem::class);
-  }
-
   public function markAsCompleted(): self {
     $this->update([
       'is_paid' => true,

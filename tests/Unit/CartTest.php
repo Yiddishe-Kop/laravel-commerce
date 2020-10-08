@@ -3,25 +3,8 @@
 namespace YiddisheKop\LaravelCommerce\Tests;
 
 use YiddisheKop\LaravelCommerce\Models\Order;
-use YiddisheKop\LaravelCommerce\Tests\Models\Product;
 
-class CartTest extends TestCase {
-
-  private Order $cart;
-  private Product $product;
-
-  public function setUp(): void {
-    parent::setUp();
-
-    Order::create();
-    Product::create([
-      'title' => 'BA Ziporen',
-      'price' => 333
-    ]);
-
-    $this->cart = Order::first();
-    $this->product = Product::first();
-  }
+class CartTest extends CommerceTestCase {
 
   /** @test */
   public function new_cart_is_unpaid_by_default() {
@@ -35,14 +18,14 @@ class CartTest extends TestCase {
 
     $this->cart->add($this->product);
 
-    $this->assertEquals(1, $this->cart->cartItems()->count());
+    $this->assertEquals(1, $this->cart->items()->count());
   }
 
   /** @test */
   public function it_can_update_cart_item_data() {
 
     $this->cart->add($this->product);
-    $cartItem = $this->cart->cartItems->first();
+    $cartItem = $this->cart->items->first();
 
     $this->assertEquals(1, $cartItem->quantity);
 
@@ -57,6 +40,6 @@ class CartTest extends TestCase {
 
     $this->cart->remove($this->product->id);
 
-    $this->assertEquals(0, $this->cart->cartItems()->count());
+    $this->assertEquals(0, $this->cart->items()->count());
   }
 }

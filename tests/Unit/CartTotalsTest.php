@@ -2,17 +2,12 @@
 
 namespace YiddisheKop\LaravelCommerce\Tests;
 
-use YiddisheKop\LaravelCommerce\Models\Order;
-use YiddisheKop\LaravelCommerce\Tests\Models\Product;
+use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
+class CartTotalsTest extends CommerceTestCase {
 
-class CartTotalsTest extends TestCase {
-
-  private Order $cart;
 
   public function setUp(): void {
     parent::setUp();
-
-    $this->cart = Order::create();
 
     $this->cart
       ->add(Product::create([

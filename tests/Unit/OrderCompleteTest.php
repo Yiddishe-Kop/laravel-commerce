@@ -3,16 +3,12 @@
 namespace YiddisheKop\LaravelCommerce\Tests;
 
 use YiddisheKop\LaravelCommerce\Models\Order;
-use YiddisheKop\LaravelCommerce\Tests\Models\Product;
+use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
-class OrderCompleteTest extends TestCase {
-
-  private Order $cart;
+class OrderCompleteTest extends CommerceTestCase {
 
   public function setUp(): void {
     parent::setUp();
-
-    $this->cart = Order::create();
 
     $this->cart
       ->add(Product::create([

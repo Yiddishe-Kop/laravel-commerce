@@ -25,8 +25,19 @@ class Order extends Model {
 
   public $timestamps = false;
 
-  public function orderItems() {
+  public function items() {
     return $this->hasMany(OrderItem::class);
   }
 
+  public function scopeIsCart($query) {
+    return $query->where('status', self::STATUS_CART);
+  }
+
+  protected static function boot() {
+    parent::boot();
+
+    static::deleting(function (self $cart) {
+      return $cart->items()->delete();
+    });
+  }
 }

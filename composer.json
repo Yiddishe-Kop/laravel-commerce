@@ -47,10 +47,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "YiddisheKop\\LaravelCommerce\\LaravelCommerceServiceProvider"
+                "YiddisheKop\\LaravelCommerce\\CommerceServiceProvider"
             ],
             "aliases": {
-                "LaravelCommerce": "YiddisheKop\\LaravelCommerce\\LaravelCommerceFacade"
+                "Gateway": "YiddisheKop\\LaravelCommerce\\Facades\\Gateway",
+                "Cart": "YiddisheKop\\LaravelCommerce\\Facades\\Cart"
             }
         }
     }

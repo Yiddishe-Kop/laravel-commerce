@@ -7,12 +7,12 @@ use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HandlesCartItems {
 
-  public function cartItems() {
+  public function items() {
     return $this->hasMany(OrderItem::class);
   }
 
   public function add(Purchasable $product, int $quantity = 1): self {
-    $this->orderItems()->create([
+    $this->items()->create([
       'model_id' => $product->id,
       'model_type' => get_class($product),
       'title' => $product->getTitle(),
@@ -28,7 +28,7 @@ trait HandlesCartItems {
   }
 
   public function calculateTotals(): self {
-    $itemsTotal = $this->cartItems->sum(fn ($item) => $item->price * $item->quantity);
+    $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
     $grandTotal = $itemsTotal + $taxTotal;

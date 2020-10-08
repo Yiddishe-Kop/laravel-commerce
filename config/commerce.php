@@ -25,4 +25,7 @@ return [
     PayPal::class => [],
   ],
 
+  'prefix' => 'commerce',
+  'middleware' => ['web'], // you probably want to include 'web' here
+
 ];
