@@ -4,6 +4,7 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 
 use Illuminate\Support\Facades\Session;
 use YiddisheKop\LaravelCommerce\Facades\Cart;
+use YiddisheKop\LaravelCommerce\Models\Order;
 
 trait SessionCart {
 
@@ -27,7 +28,7 @@ trait SessionCart {
     return $cart;
   }
 
-  protected function getOrMakeSessionCart() {
+  protected function getOrMakeSessionCart(): Order {
     if ($this->hasSessionCart()) {
       return $this->getSessionCart();
     }

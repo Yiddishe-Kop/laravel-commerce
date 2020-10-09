@@ -8,7 +8,7 @@ use YiddisheKop\LaravelCommerce\Models\Order;
 class CreateOrdersTable extends Migration {
 
   public function up() {
-    Schema::create('orders', function(Blueprint $table) {
+    Schema::create('orders', function (Blueprint $table) {
 
       $table->id();
       $table->foreignId('user_id')->nullable();
@@ -25,12 +25,10 @@ class CreateOrdersTable extends Migration {
       $table->timestamp('paid_date')->nullable();
       $table->string('gateway')->nullable();
       $table->json('gateway_data')->nullable();
-
     });
   }
 
   public function down() {
     Schema::dropIfExists('orders');
   }
-
 }

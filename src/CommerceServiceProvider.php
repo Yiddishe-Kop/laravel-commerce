@@ -17,11 +17,17 @@ class CommerceServiceProvider extends ServiceProvider {
 
   protected function bootVendorAssets() {
 
-    $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
     if ($this->app->runningInConsole()) {
+
+      $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
       $this->publishes([
-        __DIR__ . '/../config/commerce.php' => config_path('commerce.php'),
+        __DIR__ . '/../database/migrations' => $this->app->databasePath('migrations'),
+      ], 'migrations');
+
+      $this->publishes([
+        __DIR__ . '/../config/commerce.php' => $this->app->configPath('commerce.php'),
       ], 'config');
 
       // Registering package commands.
@@ -54,8 +60,8 @@ class CommerceServiceProvider extends ServiceProvider {
     // Automatically apply the package configuration
     $this->mergeConfigFrom(__DIR__ . '/../config/commerce.php', 'commerce');
 
-    // $this->app->singleton(Cart::class, function ($app) {
-    //   return $app['commerce']->getCart($app);
-    // });
+    $this->app->singleton('cart', function ($app) {
+      return new Cart();
+    });
   }
 }
