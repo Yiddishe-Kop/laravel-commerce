@@ -11,7 +11,7 @@ class CommerceTestCase extends TestCase {
   protected Order $cart;
   protected Product $product;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     Order::create();

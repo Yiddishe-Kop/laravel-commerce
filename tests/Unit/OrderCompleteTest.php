@@ -1,34 +1,23 @@
 <?php
 
-namespace YiddisheKop\LaravelCommerce\Tests;
-
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
-class OrderCompleteTest extends CommerceTestCase {
+beforeEach(function () {
+  $this->cart
+    ->add(Product::create([
+      'title' => 'BA Ziporen',
+      'price' => 333
+    ]), 2)
+    ->add(Product::create([
+      'title' => 'BA Vilna',
+      'price' => 444
+    ]), 5);
+});
 
-  public function setUp(): void {
-    parent::setUp();
-
-    $this->cart
-      ->add(Product::create([
-        'title' => 'BA Ziporen',
-        'price' => 333
-      ]), 2)
-      ->add(Product::create([
-        'title' => 'BA Vilna',
-        'price' => 444
-      ]), 5);
-
-  }
-
-  /** @test */
-  public function it_marks_the_order_as_complete() {
-
-    $this->cart->markAsCompleted();
-
-    $this->assertTrue($this->cart->is_paid);
-    $this->assertEquals(Order::STATUS_COMPLETED, $this->cart->status);
-    $this->assertTrue(today()->isSameDay($this->cart->paid_date));
-  }
-}
+it('marks the order as complete', function () {
+  $this->cart->markAsCompleted();
+  $this->assertTrue($this->cart->is_paid);
+  $this->assertEquals(Order::STATUS_COMPLETED, $this->cart->status);
+  $this->assertTrue(today()->isSameDay($this->cart->paid_date));
+});

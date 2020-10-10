@@ -8,7 +8,7 @@ use YiddisheKop\LaravelCommerce\CommerceServiceProvider;
 class TestCase extends \Orchestra\Testbench\TestCase {
   use RefreshDatabase;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->loadLaravelMigrations();
   }
@@ -23,5 +23,4 @@ class TestCase extends \Orchestra\Testbench\TestCase {
 
     (new \CreateProductsTable)->up();
   }
-
 }
