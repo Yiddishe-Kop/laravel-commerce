@@ -16,7 +16,7 @@ trait SessionCart {
     return Cart::find($this->getSessionCartKey());
   }
 
-  protected function hasSessionCart(): bool {
+  public function hasSessionCart(): bool {
     return Session::has('cart');
   }
 
@@ -39,4 +39,10 @@ trait SessionCart {
   protected function forgetSessionCart() {
     Session::forget('cart');
   }
+
+  protected function refreshSessionCart() {
+    $this->forgetSessionCart();
+    $this->makeSessionCart();
+  }
+
 }

@@ -10,6 +10,10 @@ trait Purchasable {
     Cart::add($this, $quantity);
   }
 
+  public function removeFromCart() {
+    Cart::remove($this);
+  }
+
   public function getTitle(): string {
     return 'Untitled';
   }

@@ -9,6 +9,11 @@ beforeEach(function () {
     'name' => 'Yehuda',
     'email' => 'yehuda@yiddishe-kop.com',
   ]);
+
+  $this->anotherProduct = Product::create([
+    'title' => 'BA Hayetzirah',
+    'price' => 777
+  ]);
 });
 
 test('a user can add items to his cart', function () {
@@ -25,7 +30,7 @@ test('a user can add items to his cart', function () {
   $cartItem = $cart->items->first();
   $this->assertEquals(2, $cartItem->quantity);
 
-  $this->product->addToCart(44);
+  $this->anotherProduct->addToCart(44);
   $cartItem = $cart->items()->where('quantity', '>', 5)->first();
   $this->assertEquals(44, $cartItem->quantity);
 
@@ -51,7 +56,7 @@ test('a guest can add items to his cart', function () {
   $cartItem = $cart->items->first();
   $this->assertEquals(3, $cartItem->quantity);
 
-  $this->product->addToCart(33);
+  $this->anotherProduct->addToCart(33);
   $cartItem = $cart->items()->where('quantity', '>', 5)->first();
   $this->assertEquals(33, $cartItem->quantity);
 

@@ -13,10 +13,17 @@ class Cart {
     return $this->getOrMakeSessionCart();
   }
 
-  public function find($id) {
-    return Order
+  public function find($id): Order {
+    $order = Order
       ::isCart()
-      ->findOrFail($id);
+      ->with('items')
+      ->find($id);
+
+    if (!$order) {
+      return $this->refreshSessionCart();
+    }
+
+    return $order;
   }
 
   public function create() {

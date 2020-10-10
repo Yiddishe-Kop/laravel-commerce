@@ -12,6 +12,18 @@ trait HandlesCartItems {
   }
 
   public function add(Purchasable $product, int $quantity = 1): self {
+
+    $existingItem = $this->items()
+      ->where('model_id', $product->id)
+      ->where('model_type', get_class($product))
+      ->first();
+
+    // if item is already in cart - just increment its quantity
+    if ($existingItem) {
+      $existingItem->increment('quantity', $quantity);
+      return $this;
+    }
+
     $this->items()->create([
       'model_id' => $product->id,
       'model_type' => get_class($product),
@@ -22,8 +34,10 @@ trait HandlesCartItems {
     return $this;
   }
 
-  public function remove(int $id): self {
-    OrderItem::where('model_id', $id)->delete();
+  public function remove(Purchasable $product): self {
+    OrderItem::where('model_id', $product->id)
+      ->where('model_type', get_class($product))
+      ->delete();
     return $this;
   }
 
@@ -40,5 +54,4 @@ trait HandlesCartItems {
     ]);
     return $this;
   }
-
 }

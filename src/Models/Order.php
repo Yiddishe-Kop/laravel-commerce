@@ -33,6 +33,10 @@ class Order extends Model {
     return $query->where('status', self::STATUS_CART);
   }
 
+  public function empty() {
+    $this->items()->delete();
+  }
+
   protected static function boot() {
     parent::boot();
 

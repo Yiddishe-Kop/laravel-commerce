@@ -1,6 +1,7 @@
 <?php
 
 use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
 test('new cart is unpaid by default', function () {
   $this->assertEquals(1, Order::count());
@@ -9,6 +10,12 @@ test('new cart is unpaid by default', function () {
 });
 
 it('can add items to the cart', function () {
+  $this->cart->add($this->product);
+  $this->assertEquals(1, $this->cart->items()->count());
+});
+
+test('if same item is added again - it just updates the quantity', function() {
+  $this->assertEquals(0, $this->cart->items()->count());
   $this->cart->add($this->product);
   $this->assertEquals(1, $this->cart->items()->count());
 });
@@ -24,6 +31,18 @@ it('can update cart item quantity', function () {
 });
 
 it('can remove items from the cart', function () {
-  $this->cart->remove($this->product->id);
+  $this->cart->remove($this->product);
+  $this->assertEquals(0, $this->cart->items()->count());
+});
+
+it('can empty the whole cart', function () {
+  $this->cart->add($this->product, 3);
+  $this->assertEquals(1, $this->cart->items()->count());
+  $this->cart->add(Product::create([
+    'title' => 'Hand Blender',
+    'price' => 41
+  ]));
+  $this->assertEquals(2, $this->cart->items()->count());
+  $this->cart->empty();
   $this->assertEquals(0, $this->cart->items()->count());
 });
