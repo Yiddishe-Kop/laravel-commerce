@@ -1,7 +1,6 @@
 <?php
 
 use YiddisheKop\LaravelCommerce\Gateways\PayPal;
-use YiddisheKop\LaravelCommerce\Gateways\Takbull;
 
 return [
 
@@ -17,15 +16,14 @@ return [
   | Payment Gateways
   |--------------------------------------------------------------------------
   |
-  | You can setup multiple payment gateways for your store with Simple Commerce.
+  | You can setup multiple payment gateways for your store.
   | Here's where you can configure the gateways in use.
   */
   'gateways' => [
-    Takbull::class => [],
     PayPal::class => [],
   ],
 
-  'prefix' => 'commerce',
+  'prefix' => 'commerce', // routes prefix
   'middleware' => ['web'], // you probably want to include 'web' here
 
 ];

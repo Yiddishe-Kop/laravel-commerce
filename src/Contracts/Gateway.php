@@ -2,14 +2,15 @@
 
 namespace YiddisheKop\LaravelCommerce\Contracts;
 
+use Illuminate\Http\Request;
+use YiddisheKop\LaravelCommerce\Models\Order;
+
 interface Gateway {
 
   public function name(): string;
 
-  public function prepare(array $data): array;
+  public function purchase(Order $order, Request $request);
 
-  public function purchase(array $data, $request);
-
-  public function purchaseRules(): array;
+  public function webhook(Request $request);
 
 }

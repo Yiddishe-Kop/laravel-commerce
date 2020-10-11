@@ -3,7 +3,6 @@
 namespace YiddisheKop\LaravelCommerce\Traits;
 
 use YiddisheKop\LaravelCommerce\Models\Order;
-use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HandlesOrders {
 

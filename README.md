@@ -16,13 +16,24 @@ After searching for a simple ecommerce package for Laravel and not finding a lig
 
 This package only implements the backend logic, and leaves you with full control over the frontend.
 
-<!-- ## Installation
+## Installation
 
-You can install the package via composer:
+<!-- You can install the package via composer:
 
 ```bash
 composer require yiddishe-kop/laravel-commerce
 ``` -->
+
+To publish the `commerce.php` config file:
+```bash
+php artisan vendor:publish --provider="YiddisheKop\LaravelCommerce\CommerceServiceProvider" --tag="config"
+```
+
+You can also publish the migrations if you need to customize them:
+```bash
+php artisan vendor:publish --provider="YiddisheKop\LaravelCommerce\CommerceServiceProvider" --tag="migrations"
+```
+
 
 ## Usage
 
@@ -37,6 +48,27 @@ $cart = Cart::get();
 ```
 
 When the guest logs in, the cart will be attached to his account 👌.
+
+**Note**: If you want the cart to still be available after logout, you need to override the following method in `Auth\LoginController`:
+```php
+public function logout(Request $request) {
+    $this->guard()->logout();
+
+    // keep cart data for after logout
+    $cartId = session()->get('cart');
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    session()->put('cart', $cartId);
+
+    if ($response = $this->loggedOut($request)) {
+        return $response;
+    }
+
+    return $request->wantsJson()
+        ? new JsonResponse([], 204)
+        : redirect('/');
+}
+```
 
 ### Products
 You can make any model purchasable - by implementing the `Purchasable` contract:

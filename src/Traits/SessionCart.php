@@ -30,7 +30,7 @@ trait SessionCart {
     return Session::has('cart');
   }
 
-  protected function makeSessionCart() {
+  protected function makeSessionCart(): Order {
 
     $cart = Cart::create([
       'user_id' => $this->user
@@ -53,8 +53,8 @@ trait SessionCart {
     Session::forget('cart');
   }
 
-  protected function refreshSessionCart() {
+  protected function refreshSessionCart(): Order {
     $this->forgetSessionCart();
-    $this->makeSessionCart();
+    return $this->makeSessionCart();
   }
 }

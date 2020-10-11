@@ -4,7 +4,7 @@ namespace YiddisheKop\LaravelCommerce\Gateways;
 
 use YiddisheKop\LaravelCommerce\Contracts\Gateway;
 
-class Takbull implements Gateway {
+class Example implements Gateway {
 
   public function name(): string {
     return 'Credit Card';

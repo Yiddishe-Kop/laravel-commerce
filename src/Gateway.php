@@ -34,7 +34,6 @@ class Gateway {
           'handle'          => Str::camel($instance->name()),
           'class'           => $gateway[0],
           'formatted_class' => addslashes($gateway[0]),
-          'purchaseRules'   => $instance->purchaseRules(),
           'gateway-config'  => $gateway[1],
         ];
       })

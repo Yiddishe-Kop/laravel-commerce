@@ -17,12 +17,8 @@ class CartItemController extends Controller {
     ]);
 
     $product = $request->product_type::findOrFail($request->product_id);
-    $cart = Cart::add($product, $request->quantity ?? 1);
+    Cart::add($product, $request->quantity ?? 1);
 
-    // dump(Cart::calculateTotals()->attributesToArray());
-    return response()->json([
-      'cart' => $cart,
-    ]);
     return back()->with('success', 'Product has been added to your cart.');
   }
 
