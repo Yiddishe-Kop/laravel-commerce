@@ -13,7 +13,17 @@ trait SessionCart {
   }
 
   protected function getSessionCart() {
-    return Cart::find($this->getSessionCartKey());
+
+    $cart = Cart::find($this->getSessionCartKey());
+
+    // attach to user if logged in
+    if ($this->user && !$cart->user_id) {
+      $cart->update([
+        'user_id' => $this->user,
+      ]);
+    }
+
+    return $cart;
   }
 
   public function hasSessionCart(): bool {
@@ -21,7 +31,10 @@ trait SessionCart {
   }
 
   protected function makeSessionCart() {
-    $cart = Cart::create();
+
+    $cart = Cart::create([
+      'user_id' => $this->user
+    ]);
 
     Session::put('cart', $cart->id);
 
@@ -44,5 +57,4 @@ trait SessionCart {
     $this->forgetSessionCart();
     $this->makeSessionCart();
   }
-
 }

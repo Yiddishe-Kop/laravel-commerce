@@ -9,7 +9,14 @@ use YiddisheKop\LaravelCommerce\Traits\SessionCart;
 class Cart {
   use SessionCart, ForwardsCalls;
 
+  protected $user;
+
+  public function __construct($user = null) {
+    $this->user = auth()->id();
+  }
+
   public function get(): Order {
+    $this->user = auth()->id();
     return $this->getOrMakeSessionCart();
   }
 
@@ -21,6 +28,12 @@ class Cart {
 
     if (!$order) {
       return $this->refreshSessionCart();
+    }
+
+    if ($this->user && !$order->user_id) {
+      $order->update([
+        'user_id' => $this->user,
+      ]);
     }
 
     return $order;
