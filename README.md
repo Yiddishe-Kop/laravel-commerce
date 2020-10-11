@@ -1,7 +1,7 @@
 # A simple commerce package for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
+<!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
+[![Total Downloads](https://img.shields.io/packagist/dt/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce) -->
 
 After searching for a simple ecommerce package for Laravel and not finding a lightweight simple to use solution - I decided to attempt to create one myself.
 
@@ -14,15 +14,15 @@ After searching for a simple ecommerce package for Laravel and not finding a lig
 - [ ] Multiple Currencies
 - [ ] Multiple Payment Gateways
 
-This package only implements the backend logic, and leaves you full control over the frontend.
+This package only implements the backend logic, and leaves you with full control over the frontend.
 
-## Installation
+<!-- ## Installation
 
 You can install the package via composer:
 
 ```bash
 composer require yiddishe-kop/laravel-commerce
-```
+``` -->
 
 ## Usage
 
@@ -108,7 +108,7 @@ Now the cart has the following data up to date:
 
 
 ### Testing
-
+This package has extensive tests - with the delightful Pest framework. To run the tests:
 ``` bash
 composer test
 ```
