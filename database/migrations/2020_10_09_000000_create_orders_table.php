@@ -25,6 +25,8 @@ class CreateOrdersTable extends Migration {
       $table->timestamp('paid_date')->nullable();
       $table->string('gateway')->nullable();
       $table->json('gateway_data')->nullable();
+
+      $table->timestamps();
     });
   }
 

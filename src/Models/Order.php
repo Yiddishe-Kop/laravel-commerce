@@ -23,8 +23,6 @@ class Order extends Model {
     'is_paid' => 'boolean',
   ];
 
-  public $timestamps = false;
-
   public function items() {
     return $this->hasMany(OrderItem::class);
   }
