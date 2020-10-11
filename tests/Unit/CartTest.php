@@ -1,5 +1,6 @@
 <?php
 
+use YiddisheKop\LaravelCommerce\Facades\Cart;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
@@ -33,6 +34,11 @@ it('can update cart item quantity', function () {
   ]);
   $this->assertEquals(3, $cartItem->quantity);
 });
+
+// it('can access cart items from facade', function () {
+//   $this->cart->add($this->product);
+//   expect((new Cart)->items)->toHaveCount(1);
+// });
 
 it('can remove items from the cart', function () {
   $this->cart->remove($this->product);
