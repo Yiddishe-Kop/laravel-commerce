@@ -18,11 +18,11 @@ This package only implements the backend logic, and leaves you with full control
 
 ## Installation
 
-<!-- You can install the package via composer:
+You can install the package via composer:
 
 ```bash
 composer require yiddishe-kop/laravel-commerce
-``` -->
+```
 
 To publish the `commerce.php` config file:
 ```bash
