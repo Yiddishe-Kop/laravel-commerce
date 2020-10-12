@@ -139,6 +139,21 @@ Now the cart has the following data up to date:
 ```
 Deleted products will automatically get removed from the cart upon calculating the totals.
 
+## Orders
+You can use the `HasOrders` trait on the User model, to get a `orders` relationship:
+```php
+
+use YiddisheKop\LaravelCommerce\Traits\HasOrders;
+
+class User {
+  use HasOrders;
+  // ...
+}
+
+// you can now get all the users' orders (status complete)
+$orders = $user->orders;
+```
+
 ### Testing
 This package has extensive tests - with the delightful Pest framework. To run the tests:
 ``` bash
