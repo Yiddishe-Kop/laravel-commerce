@@ -11,6 +11,7 @@ class Order extends Model {
   use HasFactory, HandlesCartItems, HandlesOrders;
 
   const STATUS_CART = 'cart';
+  const STATUS_PENDING = 'pending';
   const STATUS_COMPLETED = 'completed';
 
   protected $guarded = [];

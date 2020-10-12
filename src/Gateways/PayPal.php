@@ -9,7 +9,7 @@ use YiddisheKop\LaravelCommerce\Models\Order;
 
 class PayPal implements Gateway {
 
-  public function name(): string {
+  public static function name(): string {
     return 'PayPal';
   }
 
@@ -29,6 +29,7 @@ class PayPal implements Gateway {
 
     $order->update(['gateway' => self::class]);
 
+    // redirect to PayPal express checkout
     return response('', 409)
       ->header('X-Inertia-Location', $response['paypal_link']);
   }
@@ -36,6 +37,8 @@ class PayPal implements Gateway {
   public function complete(Order $order, Request $request) {
     $paypal = PayPalFacade::setProvider('express_checkout');
     $orderData = $this->orderData($order);
+
+    // execute the payment with the recieved credentials
     $response = $paypal
       ->doExpressCheckoutPayment(
         $orderData,
@@ -55,6 +58,7 @@ class PayPal implements Gateway {
   }
 
   public function webhook(Request $request) {
+    // not used
   }
 
   protected function orderData(Order $order): array {
