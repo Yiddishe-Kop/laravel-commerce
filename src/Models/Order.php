@@ -32,6 +32,10 @@ class Order extends Model {
     return $query->where('status', self::STATUS_CART);
   }
 
+  public function scopeCompleted($query) {
+    return $query->where('status', self::STATUS_COMPLETED);
+  }
+
   public function empty() {
     $this->items()->delete();
   }

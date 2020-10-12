@@ -51,3 +51,11 @@ it('can empty the whole cart', function () {
   $this->cart->empty();
   $this->assertEquals(0, $this->cart->items()->count());
 });
+
+it('automatically removes deleted products from the cart', function() {
+  $this->cart->add($this->product, 3);
+  expect($this->cart->items()->get())->toHaveCount(1);
+  $this->product->delete();
+  $this->cart->calculateTotals();
+  expect($this->cart->items()->get())->toHaveCount(0);
+});
