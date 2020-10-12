@@ -5,6 +5,7 @@ namespace YiddisheKop\LaravelCommerce\Gateways;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Srmklive\PayPal\Facades\PayPal as PayPalFacade;
+use Srmklive\PayPal\Services\ExpressCheckout;
 use YiddisheKop\LaravelCommerce\Contracts\Gateway;
 use YiddisheKop\LaravelCommerce\Models\Order;
 
@@ -31,12 +32,31 @@ class PayPal implements Gateway {
       'total' => $order->grand_total,
     ]);
 
+    dd($response);
+
     return response('', 409)
       ->header('X-Inertia-Location', $response['paypal_link']);
   }
 
   public function webhook(Request $request) {
     Log::info($request->input());
+    $provider = new ExpressCheckout();
+
+    $request->merge(['cmd' => '_notify-validate']);
+    $post = $request->all();
+
+    $response = (string) $provider->verifyIPN($post);
+
+    if ($response === 'VERIFIED') {
+      $order = Order::findOrFail($request->invoice_id);
+      $order->update([
+        'gateway' => self::class,
+        'gateway_data' => $request->all(),
+      ]);
+      $order->markAsCompleted();
+    }
+
+    return response('', 200);
   }
 
   protected function formatLineItems(Order $order) {
