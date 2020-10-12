@@ -137,7 +137,7 @@ Now the cart has the following data up to date:
   "grand_total" => 4262.0
 ]
 ```
-
+Deleted products will automatically get removed from the cart upon calculating the totals.
 
 ### Testing
 This package has extensive tests - with the delightful Pest framework. To run the tests:
