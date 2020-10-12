@@ -11,6 +11,8 @@ interface Gateway {
 
   public function purchase(Order $order, Request $request);
 
+  public function complete(Order $order, Request $request);
+
   public function webhook(Request $request);
 
 }
