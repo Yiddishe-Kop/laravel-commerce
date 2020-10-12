@@ -1,5 +1,6 @@
 <?php
 
+use YiddisheKop\LaravelCommerce\Cart;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
@@ -45,5 +46,9 @@ test('user has orders relation', function() {
   ]);
   expect($this->user->orders()->get())->toHaveCount(0);
   $this->cart->markAsCompleted();
+  Order::create([
+    'user_id' => $this->user->id
+  ]);
+  expect(Order::withoutGlobalScope('complete')->count())->toBe(2);
   expect($this->user->orders()->get())->toHaveCount(1);
 });

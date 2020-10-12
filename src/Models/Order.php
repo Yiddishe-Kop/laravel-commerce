@@ -2,6 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use YiddisheKop\LaravelCommerce\Traits\HandlesOrders;
@@ -47,4 +48,11 @@ class Order extends Model {
       return $cart->items()->delete();
     });
   }
+
+  protected static function booted() {
+    static::addGlobalScope('complete', function (Builder $builder) {
+      $builder->where('status', self::STATUS_COMPLETED);
+    });
+  }
+
 }
