@@ -11,6 +11,7 @@ class Order extends Model {
   use HasFactory, HandlesCartItems, HandlesOrders;
 
   const STATUS_CART = 'cart';
+  const STATUS_PENDING = 'pending';
   const STATUS_COMPLETED = 'completed';
 
   protected $guarded = [];
@@ -31,6 +32,10 @@ class Order extends Model {
     return $query->where('status', self::STATUS_CART);
   }
 
+  public function scopeCompleted($query) {
+    return $query->where('status', self::STATUS_COMPLETED);
+  }
+
   public function empty() {
     $this->items()->delete();
   }
@@ -42,4 +47,5 @@ class Order extends Model {
       return $cart->items()->delete();
     });
   }
+
 }

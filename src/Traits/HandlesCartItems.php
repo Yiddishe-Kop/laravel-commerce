@@ -42,6 +42,9 @@ trait HandlesCartItems {
   }
 
   public function calculateTotals(): self {
+
+    $this->cleanupItems();
+
     $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
@@ -53,5 +56,21 @@ trait HandlesCartItems {
       'grand_total' => $grandTotal,
     ]);
     return $this;
+  }
+
+  /**
+   *  Remove deleted products from the cart
+   *
+   *  (we can't use a constraint, as it's a morphable relationship)
+   */
+  public function cleanupItems() {
+    $this->items()
+      ->with('model:id')
+      ->get()
+      ->each(function ($item) {
+        if (!$item->model) {
+          $item->delete();
+        }
+      });
   }
 }

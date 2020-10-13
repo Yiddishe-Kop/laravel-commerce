@@ -4,8 +4,10 @@ use YiddisheKop\LaravelCommerce\Gateways\PayPal;
 
 return [
 
+  // default currency
   'currency' => 'USD',
 
+  // default tax rate
   'tax' => [
     'rate'               => 20,
     'included_in_prices' => false,

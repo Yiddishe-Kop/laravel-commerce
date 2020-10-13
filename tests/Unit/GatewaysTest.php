@@ -10,10 +10,8 @@ it('boots the payment gateways', function() {
   $this->assertNotEmpty($this->gateways);
 });
 
-test('each gateway can perform a purchase', function () {
+test('each gateway has a name', function () {
   foreach ($this->gateways as $gateway) {
-    $instance = new $gateway['class']();
-    $result = $instance->purchase([], []);
-    $this->assertEquals("Purchased with {$instance->name()}!", $result);
+    expect($gateway['class']::name())->not->toBeEmpty();
   }
 });
