@@ -5,6 +5,8 @@
 
 After searching for a simple ecommerce package for Laravel and not finding a lightweight simple to use solution - I decided to attempt to create one myself.
 
+Read the official documentation here: https://laravel-commerce.yiddishe-kop.com/
+
 ### Features
 
 - [x] Cart (stored in the session - so guests can also have a cart)
