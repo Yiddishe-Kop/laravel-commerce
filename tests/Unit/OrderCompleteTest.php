@@ -49,6 +49,6 @@ test('user has orders relation', function() {
   Order::create([
     'user_id' => $this->user->id
   ]);
-  expect(Order::withoutGlobalScope('complete')->count())->toBe(2);
+  expect(Order::count())->toBe(2);
   expect($this->user->orders()->get())->toHaveCount(1);
 });

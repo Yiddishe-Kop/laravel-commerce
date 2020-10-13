@@ -20,7 +20,7 @@ class CommerceTestCase extends TestCase {
       'price' => 333
     ]);
 
-    $this->cart = Order::withoutGlobalScope('complete')->first();
+    $this->cart = Order::first();
     $this->product = Product::first();
   }
 

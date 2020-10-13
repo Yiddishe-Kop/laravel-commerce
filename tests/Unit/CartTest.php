@@ -4,7 +4,7 @@ use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
 test('new cart is unpaid by default', function () {
-  $this->assertEquals(1, Order::withoutGlobalScope('complete')->count());
+  $this->assertEquals(1, Order::count());
   $this->assertEquals('cart', $this->cart->status);
   $this->assertEquals(false, $this->cart->is_paid);
 });

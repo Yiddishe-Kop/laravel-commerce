@@ -22,8 +22,7 @@ class Cart {
 
   public function find($id): Order {
     $order = Order
-      ::withoutGlobalScope('complete')
-      ->isCart()
+      ::isCart()
       ->with('items')
       ->find($id);
 
