@@ -15,7 +15,7 @@ class Product extends Model implements PurchasableContract {
     return $this->title;
   }
 
-  public function getPrice(): int {
+  public function getPrice($currency = null): int {
     return $this->price;
   }
 

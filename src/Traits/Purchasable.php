@@ -18,7 +18,7 @@ trait Purchasable {
     return 'Untitled';
   }
 
-  public function getPrice(): int {
+  public function getPrice($currency = null): int {
     return 0;
   }
 }
