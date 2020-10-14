@@ -1,4 +1,4 @@
-[![laravel-commerce](https://repository-images.githubusercontent.com/301966773/8826c180-0e3c-11eb-9cfb-2a02b833da4d)](https://laravel-commerce.yiddishe-kop.com/)
+[![laravel-commerce](https://laravel-commerce.yiddishe-kop.com/preview-light.png)](https://laravel-commerce.yiddishe-kop.com/)
 
 # A simple commerce package for Laravel
 
