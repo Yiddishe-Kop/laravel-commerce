@@ -16,7 +16,8 @@ class Product extends Model implements PurchasableContract {
   }
 
   public function getPrice($currency = null): int {
-    return $this->price;
+    // this is just for testing
+    return $this->price * ($currency == 'GBP' ? 0.5 : 1);
   }
 
 }

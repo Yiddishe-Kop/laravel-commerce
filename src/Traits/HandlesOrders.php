@@ -7,6 +7,14 @@ use YiddisheKop\LaravelCommerce\Models\Order;
 
 trait HandlesOrders {
 
+  public function setCurrency(string $currency) {
+    $this->update([
+      'currency' => $currency
+    ]);
+    $this->calculateTotals();
+    return $this;
+  }
+
   public function markAsCompleted(): self {
 
     if (!$this->user_id) {
@@ -14,8 +22,7 @@ trait HandlesOrders {
     }
 
     $this->update([
-      'is_paid' => true,
-      'paid_date' => now(),
+      'paid_at' => now(),
       'status' => Order::STATUS_COMPLETED,
     ]);
 

@@ -1,6 +1,5 @@
 <?php
 
-use YiddisheKop\LaravelCommerce\Cart;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
@@ -35,9 +34,8 @@ it('marks the order as complete', function () {
     'user_id' => $this->user->id
   ]);
   $this->cart->markAsCompleted();
-  $this->assertTrue($this->cart->is_paid);
   $this->assertEquals(Order::STATUS_COMPLETED, $this->cart->status);
-  $this->assertTrue(today()->isSameDay($this->cart->paid_date));
+  $this->assertTrue(today()->isSameDay($this->cart->paid_at));
 });
 
 test('user has orders relation', function() {

@@ -15,14 +15,14 @@ class CreateOrdersTable extends Migration {
       $table->foreignId('coupon_id')->nullable();
 
       $table->string('status')->default(Order::STATUS_CART);
-      $table->boolean('is_paid')->default(false);
+      $table->string('currency')->default(config('commerce.currency'));
+      $table->timestamp('paid_at')->nullable();
 
       $table->integer('items_total')->default(0);
       $table->integer('tax_total')->default(0);
       $table->integer('coupon_total')->default(0);
       $table->integer('grand_total')->default(0);
 
-      $table->timestamp('paid_date')->nullable();
       $table->string('gateway')->nullable();
       $table->json('gateway_data')->nullable();
 

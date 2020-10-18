@@ -28,7 +28,7 @@ trait HandlesCartItems {
       'model_id' => $product->id,
       'model_type' => get_class($product),
       'title' => $product->getTitle(),
-      'price' => $product->getPrice(),
+      'price' => $product->getPrice($this->currency),
       'quantity' => $quantity,
     ]);
     return $this;
@@ -78,9 +78,9 @@ trait HandlesCartItems {
         }
         $item->update([
           'title' => $item->model->getTitle(),
-          'price' => $item->model->getPrice(),
+          'price' => $item->model->getPrice($this->currency),
         ]);
       });
-      $this->refresh();
+    $this->refresh();
   }
 }
