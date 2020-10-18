@@ -41,9 +41,13 @@ trait HandlesCartItems {
     return $this;
   }
 
+  public function empty() {
+    $this->items()->delete();
+  }
+
   public function calculateTotals(): self {
 
-    $this->cleanupItems();
+    $this->refreshItems();
 
     $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
     $taxRate = config('commerce.tax.rate');
@@ -59,18 +63,24 @@ trait HandlesCartItems {
   }
 
   /**
+   *  Refresh price data from Purchasable model
    *  Remove deleted products from the cart
    *
    *  (we can't use a constraint, as it's a morphable relationship)
    */
-  public function cleanupItems() {
+  protected function refreshItems() {
     $this->items()
-      ->with('model:id')
+      ->with('model')
       ->get()
-      ->each(function ($item) {
+      ->each(function (OrderItem $item) {
         if (!$item->model) {
-          $item->delete();
+          return $item->delete();
         }
+        $item->update([
+          'title' => $item->model->getTitle(),
+          'price' => $item->model->getPrice(),
+        ]);
       });
+      $this->refresh();
   }
 }

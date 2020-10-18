@@ -10,7 +10,8 @@ class CreateOrderItemsTable extends Migration {
     Schema::create('order_items', function (Blueprint $table) {
 
       $table->id();
-      $table->foreignId('order_id');
+      $table->foreignId('order_id')->nullable();
+      $table->string('collection')->default('cart');
       $table->morphs('model');
       $table->unsignedInteger('quantity')->default(1);
       $table->string('title');

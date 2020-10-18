@@ -37,3 +37,24 @@ it('calculates the totals', function () {
     $this->cart->grand_total
   );
 });
+
+test('if the price has changed, the cart will update the price upon calculating the totals', function() {
+
+  $this->cart->empty();
+
+  $product = Product::create([
+    'title' => 'My awesome product',
+    'price' => 111
+  ]);
+
+  $this->cart->add($product);
+  $this->cart->calculateTotals();
+  expect($this->cart->items_total)->toEqual(111);
+
+  $product->update([
+    'price' => 222
+  ]);
+  $cart = $this->cart->calculateTotals();
+  expect($cart->items_total)->toEqual(222);
+
+});
