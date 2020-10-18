@@ -1,6 +1,8 @@
 <?php
 
+use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
+use YiddisheKop\LaravelCommerce\Tests\Fixtures\User;
 
 beforeEach(function () {
   $this->cart
@@ -8,6 +10,11 @@ beforeEach(function () {
       'title' => 'BA Ziporen',
       'price' => 200
     ]), 2);
+  $this->user = User::create([
+    'name' => 'Yehuda',
+    'email' => 'yehuda@yiddishe-kop.com',
+    'password' => '12345678'
+  ]);
 });
 
 
@@ -32,5 +39,18 @@ it('can recalculate the totals for new currency', function () {
 
   expect($this->cart->currency)->toBe('GBP');
   expect($this->cart->items_total)->toEqual(200);
+
+});
+
+it('it throws an exception when changing the currency of a completed order', function () {
+
+  $this->cart->update([
+    'user_id' => $this->user->id
+  ]);
+  $this->cart->calculateTotals();
+  $this->cart->markAsCompleted();
+
+  $this->expectException(OrderAlreadyComplete::class);
+  $this->cart->setCurrency('GBP');
 
 });

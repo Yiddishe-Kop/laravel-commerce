@@ -2,12 +2,18 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
 
 trait HandlesOrders {
 
   public function setCurrency(string $currency) {
+
+    if ($this->status == Order::STATUS_COMPLETED) {
+      throw new OrderAlreadyComplete("Can't change the currency after order has been completed", 1);
+    }
+
     $this->update([
       'currency' => $currency
     ]);
