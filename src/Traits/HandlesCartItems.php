@@ -27,8 +27,6 @@ trait HandlesCartItems {
     $this->items()->create([
       'model_id' => $product->id,
       'model_type' => get_class($product),
-      'title' => $product->getTitle(),
-      'price' => $product->getPrice(),
       'quantity' => $quantity,
     ]);
     return $this;
@@ -41,16 +39,19 @@ trait HandlesCartItems {
     return $this;
   }
 
-  public function calculateTotals(): self {
+  public function calculateTotals($currency = null): self {
 
-    $this->cleanupItems();
+    $currency ??= config('commerce.currency');
 
-    $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
+    $this->loadMissing('items.model');
+
+    $itemsTotal = $this->items->sum(fn ($item) => $item->model->getPrice($currency) * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
     $grandTotal = $itemsTotal + $taxTotal;
 
     $this->update([
+      'currency' => $currency,
       'items_total' => $itemsTotal,
       'tax_total' => $taxTotal,
       'grand_total' => $grandTotal,
@@ -64,13 +65,6 @@ trait HandlesCartItems {
    *  (we can't use a constraint, as it's a morphable relationship)
    */
   public function cleanupItems() {
-    $this->items()
-      ->with('model:id')
-      ->get()
-      ->each(function ($item) {
-        if (!$item->model) {
-          $item->delete();
-        }
-      });
+      // done at deleting the product
   }
 }

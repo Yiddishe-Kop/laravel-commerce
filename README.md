@@ -89,7 +89,7 @@ class Product implements Purchasable {
     }
 
     // the price
-    public function getPrice(): int {
+    public function getPrice($currency = null): int {
         return $this->price;
     }
 }

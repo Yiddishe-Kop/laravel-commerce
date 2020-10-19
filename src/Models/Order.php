@@ -40,9 +40,7 @@ class Order extends Model {
     $this->items()->delete();
   }
 
-  protected static function boot() {
-    parent::boot();
-
+  protected static function booted() {
     static::deleting(function (self $cart) {
       return $cart->items()->delete();
     });

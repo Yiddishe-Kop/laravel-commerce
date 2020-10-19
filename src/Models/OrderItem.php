@@ -10,6 +10,10 @@ class OrderItem extends Model {
 
   public $timestamps = false;
 
+  public $casts = [
+    'purchase_data' => 'array'
+  ];
+
   public function order() {
     return $this->belongsTo(Order::class);
   }

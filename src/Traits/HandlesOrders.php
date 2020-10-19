@@ -19,6 +19,14 @@ trait HandlesOrders {
       'status' => Order::STATUS_COMPLETED,
     ]);
 
+    $this->load('items.model')
+        ->items->each(fn($item) => $item->update([
+            'purchase_data' => [
+                'title' => $item->model->getTitle(),
+                'price' => $item->model->getPrice($this->currency),
+            ]
+        ]));
+
     // send email confirmation to customer...
 
     return $this;

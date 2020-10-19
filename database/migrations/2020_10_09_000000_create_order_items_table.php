@@ -8,14 +8,11 @@ class CreateOrderItemsTable extends Migration {
 
   public function up() {
     Schema::create('order_items', function (Blueprint $table) {
-
       $table->id();
       $table->foreignId('order_id');
       $table->morphs('model');
       $table->unsignedInteger('quantity')->default(1);
-      $table->string('title');
-      $table->integer('price');
-
+      $table->json('purchase_data')->nullable();
     });
   }
 

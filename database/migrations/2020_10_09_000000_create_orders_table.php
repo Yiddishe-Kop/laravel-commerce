@@ -17,6 +17,7 @@ class CreateOrdersTable extends Migration {
       $table->string('status')->default(Order::STATUS_CART);
       $table->boolean('is_paid')->default(false);
 
+      $table->string('currency')->nullable();
       $table->integer('items_total')->default(0);
       $table->integer('tax_total')->default(0);
       $table->integer('coupon_total')->default(0);

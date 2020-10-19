@@ -14,7 +14,10 @@ class PayPal implements Gateway {
   }
 
   public function purchase(Order $order, Request $request) {
-    $order->calculateTotals();
+
+    $currency = $request->currency ?? config('commerce.currency');
+
+    $order->calculateTotals($currency);
     $paypal = PayPalFacade::setProvider('express_checkout');
     $orderData = $this->orderData($order);
 
@@ -25,7 +28,10 @@ class PayPal implements Gateway {
     ];
 
     // $paypal->setCurrency($order->currency);
-    $response = $paypal->addOptions($options)->setExpressCheckout($orderData);
+    $response = $paypal
+        ->addOptions($options)
+        ->setCurrency($currency)
+        ->setExpressCheckout($orderData);
 
     $order->update(['gateway' => self::class]);
 
@@ -75,13 +81,13 @@ class PayPal implements Gateway {
   }
 
   protected function formatLineItems(Order $order): array {
-    return $order->items()->get()->transform(function ($item) {
+    return $order->items()->with('model')->get()->transform(function ($item) {
       return [
         'id' => $item->id,
         'model_id' => $item->model_id,
         'model_type' => $item->model_type,
-        'name' => $item->title,
-        'price' => $item->price * $item->quantity,
+        'name' => $item->purchase_data['title'],
+        'price' => $item->purchase_data['price'] * $item->quantity,
         'qty' => $item->quantity,
       ];
     })->toArray();
