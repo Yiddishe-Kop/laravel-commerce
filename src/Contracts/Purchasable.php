@@ -6,6 +6,6 @@ interface Purchasable {
 
   public function getTitle(): string;
 
-  public function getPrice($currency = null): int;
+  public function getPrice($currency = null, $options = null): int;
 
 }

@@ -11,7 +11,7 @@ trait HandlesCartItems {
     return $this->hasMany(OrderItem::class);
   }
 
-  public function add(Purchasable $product, int $quantity = 1): self {
+  public function add(Purchasable $product, int $quantity = 1, array $options = null): self {
 
     $existingItem = $this->items()
       ->where('model_id', $product->id)
@@ -21,6 +21,14 @@ trait HandlesCartItems {
     // if item is already in cart - just increment its quantity
     if ($existingItem) {
       $existingItem->increment('quantity', $quantity);
+
+      // update options
+      if ($options) {
+        $existingItem->update([
+          'options' => $options
+        ]);
+      }
+
       return $this;
     }
 
@@ -28,9 +36,25 @@ trait HandlesCartItems {
       'model_id' => $product->id,
       'model_type' => get_class($product),
       'title' => $product->getTitle(),
-      'price' => $product->getPrice($this->currency),
+      'price' => $product->getPrice($this->currency, $options),
       'quantity' => $quantity,
+      'options' => $options,
     ]);
+    return $this;
+  }
+
+  public function updateItem(Purchasable $product, int $quantity = 1, array $options = null): self {
+    $existingItem = $this->items()
+      ->where('model_id', $product->id)
+      ->where('model_type', get_class($product))
+      ->first();
+
+    if ($existingItem) {
+      $updateData = ['quantity' => $quantity];
+      $options && $updateData['options'] = $options;
+      $existingItem->update($updateData);
+    }
+
     return $this;
   }
 
@@ -52,11 +76,13 @@ trait HandlesCartItems {
     $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
-    $grandTotal = $itemsTotal + $taxTotal;
+    $shippingTotal = config('commerce.shipping.cost');
+    $grandTotal = $itemsTotal + $taxTotal + $shippingTotal;
 
     $this->update([
       'items_total' => $itemsTotal,
       'tax_total' => $taxTotal,
+      'shipping_total' => $shippingTotal,
       'grand_total' => $grandTotal,
     ]);
     return $this;
@@ -78,7 +104,7 @@ trait HandlesCartItems {
         }
         $item->update([
           'title' => $item->model->getTitle(),
-          'price' => $item->model->getPrice($this->currency),
+          'price' => $item->model->getPrice($this->currency, $item->options),
         ]);
       });
     $this->refresh();

@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model {
 
+  public $timestamps = false;
+
   protected $guarded = [];
 
-  public $timestamps = false;
+  protected $casts = [
+    'options' => 'array'
+  ];
 
   public function order() {
     return $this->belongsTo(Order::class);

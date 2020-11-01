@@ -13,6 +13,11 @@ return [
     'included_in_prices' => false,
   ],
 
+  // default shipping amount
+  'shipping' => [
+    'cost' => 12
+  ],
+
   /*
   |--------------------------------------------------------------------------
   | Payment Gateways

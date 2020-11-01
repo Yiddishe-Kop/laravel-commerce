@@ -13,6 +13,7 @@ class CreateOrderItemsTable extends Migration {
       $table->foreignId('order_id');
       $table->morphs('model');
       $table->unsignedInteger('quantity')->default(1);
+      $table->json('options')->nullable();
       $table->string('title');
       $table->integer('price');
 

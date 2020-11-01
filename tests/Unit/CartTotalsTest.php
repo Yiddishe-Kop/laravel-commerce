@@ -21,6 +21,7 @@ it('calculates the totals', function () {
 
   $expectedItemsTotal = (333 * 2) + (444 * 5);
   $expectedTaxTotal = round(($expectedItemsTotal / 100) * config('commerce.tax.rate'));
+  $shipping = config('commerce.shipping.cost');
 
   $this->assertEquals(
     $expectedItemsTotal,
@@ -33,7 +34,7 @@ it('calculates the totals', function () {
   );
 
   $this->assertEquals(
-    $expectedItemsTotal + $expectedTaxTotal,
+    $expectedItemsTotal + $expectedTaxTotal + $shipping,
     $this->cart->grand_total
   );
 });
