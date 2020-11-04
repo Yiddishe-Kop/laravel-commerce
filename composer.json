@@ -17,8 +17,7 @@
     ],
     "require": {
         "php": "^7.4",
-        "illuminate/support": "^8.0",
-        "srmklive/paypal": "~1.0"
+        "illuminate/support": "^8.0"
     },
     "require-dev": {
         "nunomaduro/collision": "^5.0",

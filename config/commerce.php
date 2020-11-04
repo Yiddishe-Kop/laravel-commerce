@@ -1,6 +1,6 @@
 <?php
 
-use YiddisheKop\LaravelCommerce\Gateways\PayPal;
+use YiddisheKop\LaravelCommerce\Gateways\Example;
 
 return [
 
@@ -27,7 +27,7 @@ return [
   | Here's where you can configure the gateways in use.
   */
   'gateways' => [
-    PayPal::class => [],
+    Example::class => [], // demo gateway
   ],
 
   'prefix' => 'commerce', // routes prefix

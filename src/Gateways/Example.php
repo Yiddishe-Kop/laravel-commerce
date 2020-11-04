@@ -2,28 +2,26 @@
 
 namespace YiddisheKop\LaravelCommerce\Gateways;
 
+use Illuminate\Http\Request;
 use YiddisheKop\LaravelCommerce\Contracts\Gateway;
+use YiddisheKop\LaravelCommerce\Models\Order;
 
 class Example implements Gateway {
 
-  public function name(): string {
-    return 'Credit Card';
+  public static function name(): string {
+    return 'Credit Card (demo)';
   }
 
-  public function prepare(array $data): array {
-    // prepare the credit-card form
-    return [];
+  public function purchase(Order $order, Request $request) {
+    echo 'redirecting user to payment page...';
   }
 
-  public function purchase(array $data, $request) {
-    // perform the purchase
-    return 'Purchased with Credit Card!';
+  public function complete(Order $order, Request $request) {
+    echo 'marking order as complete...';
   }
 
-  public function purchaseRules(): array {
-    return  [
-      'payment_method' => 'required|string'
-    ];
+  public function webhook(Request $request) {
+    echo 'processing webhook...';
   }
 
 }

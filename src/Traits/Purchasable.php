@@ -6,8 +6,8 @@ use YiddisheKop\LaravelCommerce\Facades\Cart;
 
 trait Purchasable {
 
-  public function addToCart(int $quantity = 1) {
-    Cart::add($this, $quantity);
+  public function addToCart(int $quantity = 1, $options = null) {
+    Cart::add($this, $quantity, $options);
   }
 
   public function removeFromCart() {
