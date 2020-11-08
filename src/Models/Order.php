@@ -28,6 +28,10 @@ class Order extends Model {
     return $this->hasMany(OrderItem::class);
   }
 
+  public function user() {
+    return $this->belongsTo(config('user', 'App\\User'));
+  }
+
   public function scopeIsCart($query) {
     return $query->where('status', self::STATUS_CART);
   }

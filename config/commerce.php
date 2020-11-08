@@ -18,6 +18,9 @@ return [
     'cost' => 12
   ],
 
+  // your user model - replace this with your user model
+  'user' => 'App\\User',
+
   /*
   |--------------------------------------------------------------------------
   | Payment Gateways
