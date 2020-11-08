@@ -32,6 +32,10 @@ class Order extends Model {
     return $this->belongsTo(config('user', 'App\\User'));
   }
 
+  public function getTimeAgoAttribute() {
+    return $this->created_at->diffForHumans();
+  }
+
   public function scopeIsCart($query) {
     return $query->where('status', self::STATUS_CART);
   }
@@ -47,5 +51,4 @@ class Order extends Model {
       return $cart->items()->delete();
     });
   }
-
 }
