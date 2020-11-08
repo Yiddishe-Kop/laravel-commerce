@@ -24,6 +24,10 @@ class Order extends Model {
     'is_paid' => 'boolean',
   ];
 
+  protected $appends = [
+    'timeAgo',
+  ];
+
   public function items() {
     return $this->hasMany(OrderItem::class);
   }
