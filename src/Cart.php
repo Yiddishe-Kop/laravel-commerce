@@ -39,8 +39,8 @@ class Cart {
     return $order;
   }
 
-  public function create() {
-    return Order::create();
+  public function create($attributes = []) {
+    return Order::create($attributes);
   }
 
   /**
