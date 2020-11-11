@@ -33,7 +33,8 @@ trait SessionCart {
   protected function makeSessionCart(): Order {
 
     $cart = Cart::create([
-      'user_id' => $this->user
+      'user_id' => $this->user,
+      'currency' => config('commerce.currency'),
     ]);
 
     Session::put('cart', $cart->id);
