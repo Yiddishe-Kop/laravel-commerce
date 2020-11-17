@@ -2,7 +2,9 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use Illuminate\Database\Eloquent\Collection;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
+use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HandlesCartItems {
@@ -73,7 +75,7 @@ trait HandlesCartItems {
 
     $this->refreshItems();
 
-    $itemsTotal = $this->items->sum(fn ($item) => $item->price * $item->quantity);
+    $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
     $taxRate = config('commerce.tax.rate');
     $taxTotal = round(($itemsTotal / 100) * $taxRate);
     $shippingTotal = config('commerce.shipping.cost');
@@ -95,18 +97,28 @@ trait HandlesCartItems {
    *  (we can't use a constraint, as it's a morphable relationship)
    */
   protected function refreshItems() {
-    $this->items()
+
+    $cartItems = $this->items()
       ->with('model')
-      ->get()
-      ->each(function (OrderItem $item) {
-        if (!$item->model) {
-          return $item->delete();
-        }
+      ->get();
+
+    $offer = Offer::getFor($this);
+
+    $cartItems->each(function (OrderItem $item) use ($offer) {
+      if (!$item->model) { // product has been deleted
+        return $item->delete(); // also remove from cart
+      }
+      if ($offer && $offer->product_type == $item->model_type) {
+        $offer->apply($item);
+      } else {
         $item->update([
           'title' => $item->model->getTitle(),
           'price' => $item->model->getPrice($this->currency, $item->options),
         ]);
-      });
+      }
+    });
+
     $this->refresh();
   }
+
 }

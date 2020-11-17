@@ -16,6 +16,7 @@ class CreateOrderItemsTable extends Migration {
       $table->json('options')->nullable();
       $table->string('title');
       $table->integer('price');
+      $table->integer('discount')->default(0);
 
     });
   }

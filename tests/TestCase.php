@@ -20,7 +20,9 @@ class TestCase extends \Orchestra\Testbench\TestCase {
   protected function getEnvironmentSetUp($app) {
 
     include_once __DIR__ . '/Fixtures/create_products_table.php';
+    include_once __DIR__ . '/Fixtures/create_packages_table.php';
 
     (new \CreateProductsTable)->up();
+    (new \CreatePackagesTable)->up();
   }
 }
