@@ -108,7 +108,7 @@ trait HandlesCartItems {
       if (!$item->model) { // product has been deleted
         return $item->delete(); // also remove from cart
       }
-      if ($offer && $offer->product_type == $item->model_type) {
+      if ($offer && $offer->isValidFor($item)) {
         $offer->apply($item);
       } else {
         $item->update([

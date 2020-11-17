@@ -31,7 +31,6 @@ class Offer extends Model {
       } else if ($productTypeCounts->has($offer->product_type)) { // the required product type is in the cart
         $amountInCart = $productTypeCounts[$offer->product_type];
         if ($amountInCart >= $offer->min) { // right amount in cart
-          // if ($offer->max && $amountInCart > $offer->max) return; // too many
           $validOffers->push($offer);
         }
       }
@@ -40,6 +39,11 @@ class Offer extends Model {
     $appliedOffer = $validOffers->first();
 
     return $appliedOffer;
+  }
+
+  public function isValidFor(OrderItem $item) {
+    if (!$this->product_type) return true;
+    return $this->product_type == $item->model_type;
   }
 
   /**

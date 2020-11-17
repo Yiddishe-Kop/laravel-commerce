@@ -18,30 +18,31 @@ beforeEach(function () {
       'title' => 'Hotel Weekend Package',
       'price' => 4000
     ]));
-
-    Offer::create([
-      'type' => Offer::TYPE_PERCENTAGE,
-      'discount' => 10,
-      'product_type' => Product::class,
-    ]);
-    Offer::create([
-      'type' => Offer::TYPE_PERCENTAGE,
-      'discount' => 20,
-      'min' => 3,
-      'product_type' => Product::class,
-    ]);
 });
 
-test('Offer has been created', function() {
-  $offer = Offer::first();
-  dump($offer->attributesToArray());
-  expect($offer)->not()->toBeNull();
-});
+test('Offers get applied to cart total', function () {
 
-test('Offers get applied to cart total', function() {
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 10,
+    'product_type' => Product::class,
+  ]);
 
   $this->cart->calculateTotals();
 
   expect($this->cart->items_total)->toEqual(8500);
+});
 
-})->only();
+test('Offer doesn\'t get applied if minimum is not met', function () {
+
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 20,
+    'min' => 3,
+    'product_type' => Product::class,
+  ]);
+
+  $this->cart->calculateTotals();
+
+  expect($this->cart->items_total)->toEqual(9000);
+});

@@ -14,7 +14,6 @@ class CreateOffersTable extends Migration {
       $table->string('name')->default('Special Offer');
       $table->string('type')->default(Offer::TYPE_PERCENTAGE);
       $table->integer('min')->default(1);
-      $table->integer('max')->nullable();
       $table->integer('discount')->default(10);
       $table->string('product_type')->nullable();
 
