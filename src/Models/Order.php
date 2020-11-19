@@ -17,7 +17,7 @@ class Order extends Model {
   protected $guarded = [];
 
   protected $dates = [
-    'paid_date'
+    'paid_at'
   ];
 
   protected $casts = [
