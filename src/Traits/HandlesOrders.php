@@ -2,7 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
-use App\Events\OrderCompleted;
+use YiddisheKop\LaravelCommerce\Events\OrderCompleted as EventsOrderCompleted;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
@@ -33,7 +33,7 @@ trait HandlesOrders {
       'status' => Order::STATUS_COMPLETED,
     ]);
 
-    event(new OrderCompleted($this));
+    event(new EventsOrderCompleted($this));
 
     return $this;
   }

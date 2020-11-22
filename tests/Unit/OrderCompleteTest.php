@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Event;
+use YiddisheKop\LaravelCommerce\Events\OrderCompleted;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
@@ -36,6 +38,21 @@ it('marks the order as complete', function () {
   $this->cart->markAsCompleted();
   $this->assertEquals(Order::STATUS_COMPLETED, $this->cart->status);
   $this->assertTrue(today()->isSameDay($this->cart->paid_at));
+});
+
+test('OrderCompeleted event is emitted', function() {
+
+  Event::fake();
+
+  $this->cart->update([
+    'user_id' => $this->user->id
+  ]);
+  $this->cart->markAsCompleted();
+
+  Event::assertDispatched(OrderCompleted::class, function(OrderCompleted $event){
+    return $event->order->id == $this->cart->id;
+  });
+
 });
 
 test('user has orders relation', function() {
