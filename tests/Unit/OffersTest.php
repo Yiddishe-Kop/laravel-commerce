@@ -33,6 +33,37 @@ test('Offers get applied to cart total', function () {
   expect($this->cart->items_total)->toEqual(8500);
 });
 
+test('Expired offers are not applied', function () {
+
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 50,
+    'valid_from' => now()->addMinute(),
+  ]);
+
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 50,
+    'valid_to' => now()->subMinute(),
+  ]);
+
+  $this->cart->calculateTotals();
+
+  expect($this->cart->items_total)->toEqual(9000);
+
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 50,
+    'valid_from' => now()->subMinute(),
+    'valid_to' => now()->addMinute(),
+  ]);
+
+  $this->cart->calculateTotals();
+
+  expect($this->cart->items_total)->toEqual(4500);
+
+})->only();
+
 test('Offer doesn\'t get applied if minimum is not met', function () {
 
   Offer::create([

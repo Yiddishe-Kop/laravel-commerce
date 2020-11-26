@@ -17,6 +17,9 @@ class CreateOffersTable extends Migration {
       $table->integer('discount')->default(10);
       $table->string('product_type')->nullable();
 
+      $table->timestamp('valid_from')->nullable();
+      $table->timestamp('valid_to')->nullable();
+
       $table->timestamps();
     });
   }

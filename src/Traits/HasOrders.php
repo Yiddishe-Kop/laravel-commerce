@@ -12,7 +12,7 @@ trait HasOrders {
   }
 
   public function orderItems() {
-    return $this->hasManyThrough(OrderItem::class, Order::class);
+    return $this->hasManyThrough(OrderItem::class, Order::class)->where('orders.status', Order::STATUS_COMPLETED);
   }
 
 }

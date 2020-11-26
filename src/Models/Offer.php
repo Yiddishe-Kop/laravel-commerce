@@ -11,6 +11,17 @@ class Offer extends Model {
 
   protected $guarded = [];
 
+  // scopes
+  public function scopeValid($q) {
+    $q->where(function ($q) {
+      $q->where('valid_from', '<', now())
+        ->orWhereNull('valid_from');
+    })->where(function ($q) {
+      $q->where('valid_to', '>', now())
+        ->orWhereNull('valid_to');
+    });
+  }
+
   /**
    * Get first available offer for the order
    */
@@ -22,7 +33,10 @@ class Offer extends Model {
       });
 
     $validOffers = collect();
-    $offers = Offer::orderBy('min', 'desc')->get();
+
+    $offers = Offer::valid()
+      ->orderBy('min', 'desc')
+      ->get();
 
     $offers->each(function ($offer) use ($validOffers, $productTypeCounts) {
       if (!$offer->product_type) { // offer is valid for all product types
