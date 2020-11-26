@@ -33,6 +33,47 @@ test('Offers get applied to cart total', function () {
   expect($this->cart->items_total)->toEqual(8500);
 });
 
+test('Offers only get applied to specified product type', function () {
+
+  Offer::create([
+    'type' => Offer::TYPE_PERCENTAGE,
+    'discount' => 50,
+    'product_type' => Package::class,
+  ]);
+
+  $this->cart->calculateTotals();
+
+  expect($this->cart->items_total)->toEqual(7000);
+})->only();
+
+test('The right Offer with highest min gets applied', function () {
+
+  $this->cart->empty();
+
+  $this->cart
+    ->add(Product::create([
+      'title' => 'Mercedes S300',
+      'price' => 1000,
+    ]), 6);
+
+  Offer::create([
+    'type' => Offer::TYPE_FIXED,
+    'discount' => 100,
+    'min' => 3,
+  ]);
+
+  // This offer should get applied, as min is higher, and 6 in cart.
+  Offer::create([
+    'type' => Offer::TYPE_FIXED,
+    'discount' => 200,
+    'min' => 6,
+  ]);
+
+  $this->cart->calculateTotals();
+
+  expect($this->cart->items_total)->toEqual(4800);
+});
+
 test('Expired offers are not applied', function () {
 
   Offer::create([
@@ -61,8 +102,7 @@ test('Expired offers are not applied', function () {
   $this->cart->calculateTotals();
 
   expect($this->cart->items_total)->toEqual(4500);
-
-})->only();
+});
 
 test('Offer doesn\'t get applied if minimum is not met', function () {
 
