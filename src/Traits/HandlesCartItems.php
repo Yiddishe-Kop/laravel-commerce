@@ -80,6 +80,12 @@ trait HandlesCartItems {
     }
   }
 
+  public function removeCoupon() {
+    $this->update([
+      'coupon_id' => null
+    ]);
+  }
+
   private function getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal) {
     $couponDiscount = 0;
     $originalPrice = $itemsTotal;
