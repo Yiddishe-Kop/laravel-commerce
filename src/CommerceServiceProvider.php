@@ -4,8 +4,7 @@ namespace YiddisheKop\LaravelCommerce;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
-use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
+use YiddisheKop\LaravelCommerce\Providers\EventServiceProvider;
 
 class CommerceServiceProvider extends ServiceProvider {
   /**
@@ -54,18 +53,14 @@ class CommerceServiceProvider extends ServiceProvider {
     'cart' => Cart::class,
   ];
 
-  protected $listen = [
-    CouponRedeemed::class => [
-      IncrementCouponTimesUsed::class,
-    ]
-  ];
-
   /**
    * Register the application services.
    */
   public function register() {
     // Automatically apply the package configuration
     $this->mergeConfigFrom(__DIR__ . '/../config/commerce.php', 'commerce');
+
+    $this->app->register(EventServiceProvider::class);
 
     $this->app->singleton('cart', function ($app) {
       return new Cart();
