@@ -138,6 +138,7 @@ trait HandlesCartItems {
         $item->update([
           'title' => $item->model->getTitle(),
           'price' => $item->model->getPrice($this->currency, $item->options),
+          'discount' => 0,
         ]);
       }
     });
