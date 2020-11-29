@@ -137,7 +137,7 @@ Now the cart has the following data up to date:
 [
   "items_total" => 3552
   "tax_total" => 710.0
-  "coupon_discount" => "0"
+  "coupon_total" => "0"
   "grand_total" => 4262.0
 ]
 ```

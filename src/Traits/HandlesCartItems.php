@@ -2,7 +2,6 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
-use Illuminate\Database\Eloquent\Collection;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
@@ -106,7 +105,7 @@ trait HandlesCartItems {
 
     $this->update([
       'items_total' => $itemsTotal,
-      'coupon_discount' => $couponDiscount,
+      'coupon_total' => $couponDiscount,
       'tax_total' => $taxTotal,
       'shipping_total' => $shippingTotal,
       'grand_total' => $grandTotal,

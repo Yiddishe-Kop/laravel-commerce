@@ -34,7 +34,7 @@ trait HandlesOrders {
       'status' => Order::STATUS_COMPLETED,
     ]);
 
-    if ($this->coupon && $this->coupon_discount) {
+    if ($this->coupon && $this->coupon_total) {
       event(new CouponRedeemed($this->coupon));
     }
 

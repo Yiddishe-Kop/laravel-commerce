@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
+use YiddisheKop\LaravelCommerce\Cart;
 use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponLimitReached;
@@ -41,7 +42,7 @@ test('Can apply FIXED coupon to order', function () {
   $this->cart->calculateTotals();
 
   expect($this->cart->coupon->id)->toBe($coupon->id);
-  expect($this->cart->coupon_discount)->toEqual($coupon->discount);
+  expect($this->cart->coupon_total)->toEqual($coupon->discount);
   // shipping: 12
   // tax: 600
   // itemsTotal: 3612
@@ -58,7 +59,7 @@ test('Can apply PERCENTAGE coupon to order', function () {
   // tax: 600
   // itemsTotal: 3612
   // expected coupon discount: 361.2
-  expect($this->cart->coupon_discount)->toEqual(361.2);
+  expect($this->cart->coupon_total)->toEqual(361.2);
   expect($this->cart->grand_total)->toEqual(3612 - 361.2);
 });
 
@@ -103,7 +104,7 @@ test('CouponRedeemed event fired', function () {
   Event::assertDispatched(CouponRedeemed::class, fn ($event) => $event->coupon->id == $this->coupon->id);
 });
 
-test('Coupon time_used incremented', function () {
+test('Coupon times_used incremented', function () {
   $this->cart->applyCoupon($this->coupon->code);
   $this->cart->calculateTotals();
   $this->cart->update([
