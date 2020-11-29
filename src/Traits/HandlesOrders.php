@@ -2,7 +2,8 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
-use YiddisheKop\LaravelCommerce\Events\OrderCompleted as EventsOrderCompleted;
+use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
+use YiddisheKop\LaravelCommerce\Events\OrderCompleted;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
 use YiddisheKop\LaravelCommerce\Models\Order;
@@ -33,7 +34,11 @@ trait HandlesOrders {
       'status' => Order::STATUS_COMPLETED,
     ]);
 
-    event(new EventsOrderCompleted($this));
+    if ($this->coupon && $this->coupon_discount) {
+      event(new CouponRedeemed($this->coupon));
+    }
+
+    event(new OrderCompleted($this));
 
     return $this;
   }

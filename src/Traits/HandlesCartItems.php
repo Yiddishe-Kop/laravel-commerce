@@ -4,6 +4,8 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
+use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
+use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
@@ -71,18 +73,40 @@ trait HandlesCartItems {
     $this->items()->delete();
   }
 
+  public function applyCoupon(string $code) {
+    if ($coupon = Coupon::where('code', $code)->first()) {
+      return $coupon->apply($this);
+    } else {
+      throw new CouponNotFound("Invalid coupon code", 1);
+    }
+  }
+
+  private function getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal) {
+    $couponDiscount = 0;
+    $originalPrice = $itemsTotal;
+    config('commerce.coupon.include_tax') && $originalPrice += $taxTotal;
+    config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
+
+    if ($this->coupon) {
+      $couponDiscount = $this->coupon->calculateDiscount($originalPrice);
+    }
+    return $couponDiscount;
+  }
+
   public function calculateTotals(): self {
 
     $this->refreshItems();
 
     $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
-    $taxRate = config('commerce.tax.rate');
-    $taxTotal = round(($itemsTotal / 100) * $taxRate);
+    // TODO: config('commerce.tax.included_in_prices')
+    $taxTotal = round(($itemsTotal / 100) * config('commerce.tax.rate'));
     $shippingTotal = config('commerce.shipping.cost');
-    $grandTotal = $itemsTotal + $taxTotal + $shippingTotal;
+    $couponDiscount = $this->getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal);
+    $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
 
     $this->update([
       'items_total' => $itemsTotal,
+      'coupon_discount' => $couponDiscount,
       'tax_total' => $taxTotal,
       'shipping_total' => $shippingTotal,
       'grand_total' => $grandTotal,
@@ -92,6 +116,7 @@ trait HandlesCartItems {
 
   /**
    *  Refresh price data from Purchasable model
+   *  Apply Offer
    *  Remove deleted products from the cart
    *
    *  (we can't use a constraint, as it's a morphable relationship)
@@ -120,5 +145,4 @@ trait HandlesCartItems {
 
     $this->refresh();
   }
-
 }

@@ -44,7 +44,7 @@ test('Offers only get applied to specified product type', function () {
   $this->cart->calculateTotals();
 
   expect($this->cart->items_total)->toEqual(7000);
-})->only();
+});
 
 test('The right Offer with highest min gets applied', function () {
 

@@ -11,6 +11,11 @@ class Offer extends Model {
 
   protected $guarded = [];
 
+  protected $dates = [
+    'valid_from',
+    'valid_to',
+  ];
+
   // scopes
   public function scopeValid($q) {
     $q->where(function ($q) {

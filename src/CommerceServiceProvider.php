@@ -4,6 +4,8 @@ namespace YiddisheKop\LaravelCommerce;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
+use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
 
 class CommerceServiceProvider extends ServiceProvider {
   /**
@@ -16,7 +18,6 @@ class CommerceServiceProvider extends ServiceProvider {
   }
 
   protected function bootVendorAssets() {
-
 
     if ($this->app->runningInConsole()) {
 
@@ -51,6 +52,12 @@ class CommerceServiceProvider extends ServiceProvider {
   public $bindings = [
     'gateway' => Gateway::class,
     'cart' => Cart::class,
+  ];
+
+  protected $listen = [
+    CouponRedeemed::class => [
+      IncrementCouponTimesUsed::class,
+    ]
   ];
 
   /**

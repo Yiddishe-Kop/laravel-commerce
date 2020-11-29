@@ -13,6 +13,12 @@ return [
     'included_in_prices' => false,
   ],
 
+  // Coupon settings
+  'coupon' => [
+    'include_tax' => true, // if to apply the coupon after taxes
+    'include_shipping' => true, // if to apply the coupon after shipping
+  ],
+
   // default shipping amount
   'shipping' => [
     'cost' => 12
