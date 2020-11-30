@@ -2,8 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1-alpha.0](https://github.com/Yiddishe-Kop/laravel-commerce/compare/v1.0.0...v1.0.1-alpha.0) (2020-11-30)
+
 ## 1.0.0 (2020-11-30)
 
+- initial release 🥳
 
 ### Features
 
@@ -20,13 +23,9 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * eventServiceProvider ([fbff95e](https://github.com/Yiddishe-Kop/laravel-commerce/commit/fbff95e64a2d79781a2a54499ea7842415847d73))
-* Order paid_at dats ([02a09a7](https://github.com/Yiddishe-Kop/laravel-commerce/commit/02a09a73bf1551a7e850a79b1056296706091376))
+* Order paid_at dates ([02a09a7](https://github.com/Yiddishe-Kop/laravel-commerce/commit/02a09a73bf1551a7e850a79b1056296706091376))
 * pass attributes at cart creation ([3291bea](https://github.com/Yiddishe-Kop/laravel-commerce/commit/3291bea836ce512fa8e9461a4d537560cd6826c1))
 * recalculate totals after adding/removing item from cart ([db56afd](https://github.com/Yiddishe-Kop/laravel-commerce/commit/db56afdb4f78fcea226c0e86c99da9e30f91442e))
 * remove offer when removing cart-items ([f96f1a8](https://github.com/Yiddishe-Kop/laravel-commerce/commit/f96f1a814992acd412a82d407c9649522c048c7c))
 * reverted to coupon_total ([fdaa6d4](https://github.com/Yiddishe-Kop/laravel-commerce/commit/fdaa6d4a30225af000d77a95c18196a0036efc8d))
 * set default currency at cart creation ([c650483](https://github.com/Yiddishe-Kop/laravel-commerce/commit/c6504832c8bc4835c2c31bd9db90a213426d6dc7))
-
-## 1.0.0 - 201X-XX-XX
-
-- initial release
