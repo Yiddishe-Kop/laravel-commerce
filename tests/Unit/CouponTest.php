@@ -111,9 +111,6 @@ test('Coupon times_used incremented', function () {
     'user_id' => 1
   ]);
   $this->cart->markAsCompleted();
-  (new IncrementCouponTimesUsed)->handle(
-    new CouponRedeemed($this->coupon)
-  );
   $this->coupon->refresh();
   expect($this->coupon->times_used)->toEqual(1);
 });
