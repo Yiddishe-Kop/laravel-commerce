@@ -18,7 +18,7 @@ trait HandlesCartItems {
   public function add(Purchasable $product, $quantity = 1, array $options = null): self {
 
     if (!is_numeric($quantity)) {
-      throw new QuantityNotNumeric("Quantity has to be numeric", 1);
+      throw new QuantityNotNumeric("quantityNotNumeric", 1);
     };
 
     $existingItem = $this->items()
@@ -54,7 +54,7 @@ trait HandlesCartItems {
   public function updateItem(Purchasable $product, $quantity = 1, array $options = null): self {
 
     if (!is_numeric($quantity)) {
-      throw new QuantityNotNumeric("Quantity has to be numeric", 1);
+      throw new QuantityNotNumeric("quantityNotNumeric", 1);
     };
 
     $existingItem = $this->items()
@@ -86,7 +86,7 @@ trait HandlesCartItems {
     if ($coupon = Coupon::where('code', $code)->first()) {
       return $coupon->apply($this);
     } else {
-      throw new CouponNotFound("Invalid coupon code", 1);
+      throw new CouponNotFound("CouponInvalid", 1);
     }
   }
 

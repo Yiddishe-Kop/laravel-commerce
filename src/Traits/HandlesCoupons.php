@@ -29,10 +29,10 @@ trait HandlesCoupons {
    */
   public function apply(Order $order) {
     if (!$this->isValid()) {
-      throw new CouponExpired("The coupon is no longer valid", 1);
+      throw new CouponExpired("CouponExpired", 1);
     }
     if (!is_null($this->max_uses) && $this->times_used >= $this->max_uses) {
-      throw new CouponLimitReached("The coupon has been used to it's max", 1);
+      throw new CouponLimitReached("CouponLimitReached", 1);
     }
     $order->update([
       'coupon_id' => $this->id
