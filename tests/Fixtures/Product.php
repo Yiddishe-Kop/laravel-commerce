@@ -17,17 +17,20 @@ class Product extends Model implements PurchasableContract {
 
   public function getPrice($currency = null, $options = null): int {
     // this is just for testing
-    $price = $this->price;
-
+    $price = $this->price * 100;
     if ($options) {
       $price += [
-        'small' => 10,
-        'medium' => 20,
-        'large' => 30,
-      ][$options['size']];
+        'small' => 1000,
+        'medium' => 2000,
+        'large' => 3000,
+        ][$options['size']];
+      }
+
+    if ($currency == 'GBP') {
+      return $price / 2; // example to demonstrate how to handle currencies
     }
 
-    return $price * ($currency == 'GBP' ? 0.5 : 1);
+    return $price;
   }
 
 }

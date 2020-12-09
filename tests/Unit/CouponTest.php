@@ -35,7 +35,7 @@ test('Can apply FIXED coupon to order', function () {
   $coupon = Coupon::create([
     'code' => 'BLACK-FRIDAY-2021',
     'type' => Coupon::TYPE_FIXED,
-    'discount' => 200,
+    'discount' => 20000,
   ]);
 
   $this->cart->applyCoupon($coupon->code);
@@ -43,10 +43,10 @@ test('Can apply FIXED coupon to order', function () {
 
   expect($this->cart->coupon->id)->toBe($coupon->id);
   expect($this->cart->coupon_total)->toEqual($coupon->discount);
-  // shipping: 12
-  // tax: 600
-  // itemsTotal: 3612
-  expect($this->cart->grand_total)->toEqual(3612 - 200);
+  // shipping: 1200
+  // tax: 60000
+  // itemsTotal: 361200
+  expect($this->cart->grand_total)->toEqual((361200 - 20000));
 });
 
 test('Can apply PERCENTAGE coupon to order', function () {
@@ -55,12 +55,12 @@ test('Can apply PERCENTAGE coupon to order', function () {
   $this->cart->calculateTotals();
 
   expect($this->cart->coupon->id)->toBe($this->coupon->id);
-  // shipping: 12
-  // tax: 600
-  // itemsTotal: 3612
-  // expected coupon discount: 361.2
-  expect($this->cart->coupon_total)->toEqual(361.2);
-  expect($this->cart->grand_total)->toEqual(3612 - 361.2);
+  // shipping: 1200
+  // tax: 60000
+  // itemsTotal: 361200
+  // expected coupon discount: 3612
+  expect($this->cart->coupon_total)->toEqual(36120);
+  expect($this->cart->grand_total)->toEqual(361200 - 36120);
 });
 
 it('throws an exception if trying to apply invalid coupon code', function () {

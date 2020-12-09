@@ -19,7 +19,7 @@ it('calculates the totals', function () {
 
   $this->cart->calculateTotals();
 
-  $expectedItemsTotal = (333 * 2) + (444 * 5);
+  $expectedItemsTotal = ((333 * 2) + (444 * 5)) * 100;
   $expectedTaxTotal = round(($expectedItemsTotal / 100) * config('commerce.tax.rate'));
   $shipping = config('commerce.shipping.cost');
 
@@ -50,12 +50,32 @@ test('if the price has changed, the cart will update the price upon calculating 
 
   $this->cart->add($product);
   $this->cart->calculateTotals();
-  expect($this->cart->items_total)->toEqual(111);
+  expect($this->cart->items_total)->toEqual(11100);
 
   $product->update([
     'price' => 222
   ]);
   $cart = $this->cart->calculateTotals();
-  expect($cart->items_total)->toEqual(222);
+  expect($cart->items_total)->toEqual(22200);
 
+});
+
+test('decimal prices work well', function () {
+
+  $this->cart->empty();
+
+  $product = Product::create([
+    'title' => 'My awesome product',
+    'price' => 10.45
+  ]);
+
+  $this->cart->add($product);
+  $this->cart->calculateTotals();
+  expect($this->cart->items_total)->toEqual(1045);
+
+  $product->update([
+    'price' => 12.99
+  ]);
+  $cart = $this->cart->calculateTotals();
+  expect($cart->items_total)->toEqual(1299);
 });

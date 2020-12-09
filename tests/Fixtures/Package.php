@@ -16,7 +16,7 @@ class Package extends Model implements PurchasableContract {
   }
 
   public function getPrice($currency = null, $options = null): int {
-    return $this->price;
+    return $this->price * 100;
   }
 
 }

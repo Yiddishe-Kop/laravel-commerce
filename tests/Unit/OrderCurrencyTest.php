@@ -33,12 +33,12 @@ it('can recalculate the totals for new currency', function () {
   $this->cart->calculateTotals();
 
   expect($this->cart->currency)->toBe('USD');
-  expect($this->cart->items_total)->toEqual(400);
+  expect($this->cart->items_total)->toEqual(40000);
 
   $this->cart->setCurrency('GBP');
 
   expect($this->cart->currency)->toBe('GBP');
-  expect($this->cart->items_total)->toEqual(200);
+  expect($this->cart->items_total)->toEqual(20000);
 
 });
 

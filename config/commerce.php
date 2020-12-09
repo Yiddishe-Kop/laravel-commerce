@@ -21,7 +21,7 @@ return [
 
   // default shipping amount
   'shipping' => [
-    'cost' => 12
+    'cost' => 1200
   ],
 
   // your user model - replace this with your user model

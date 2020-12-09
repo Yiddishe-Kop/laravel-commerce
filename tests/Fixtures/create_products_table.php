@@ -11,7 +11,7 @@ class CreateProductsTable extends Migration {
 
       $table->id();
       $table->string('title');
-      $table->unsignedInteger('price');
+      $table->unsignedDecimal('price');
       $table->timestamps();
 
     });
