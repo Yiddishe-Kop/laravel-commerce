@@ -4,6 +4,7 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
+use YiddisheKop\LaravelCommerce\Exceptions\QuantityNotNumeric;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
@@ -14,7 +15,11 @@ trait HandlesCartItems {
     return $this->hasMany(OrderItem::class);
   }
 
-  public function add(Purchasable $product, int $quantity = 1, array $options = null): self {
+  public function add(Purchasable $product, $quantity = 1, array $options = null): self {
+
+    if (!is_numeric($quantity)) {
+      throw new QuantityNotNumeric("Quantity has to be numeric", 1);
+    };
 
     $existingItem = $this->items()
       ->where('model_id', $product->id)
@@ -46,7 +51,12 @@ trait HandlesCartItems {
     return $this;
   }
 
-  public function updateItem(Purchasable $product, int $quantity = 1, array $options = null): self {
+  public function updateItem(Purchasable $product, $quantity = 1, array $options = null): self {
+
+    if (!is_numeric($quantity)) {
+      throw new QuantityNotNumeric("Quantity has to be numeric", 1);
+    };
+
     $existingItem = $this->items()
       ->where('model_id', $product->id)
       ->where('model_type', get_class($product))

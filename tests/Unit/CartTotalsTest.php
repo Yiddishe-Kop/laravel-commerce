@@ -79,3 +79,22 @@ test('decimal prices work well', function () {
   $cart = $this->cart->calculateTotals();
   expect($cart->items_total)->toEqual(1299);
 });
+
+test('fractional quantities (e.g. for weighable products) work well', function () {
+  $this->cart->empty();
+
+  $product = Product::create([
+    'title' => 'Bananas',
+    'price' => 4.9
+  ]);
+
+  $this->cart->add($product, 0.5);
+  $this->cart->calculateTotals();
+  expect($this->cart->items_total)->toEqual(245);
+
+  $product->update([
+    'price' => 5.2
+  ]);
+  $cart = $this->cart->calculateTotals();
+  expect($cart->items_total)->toEqual(260);
+})->only();
