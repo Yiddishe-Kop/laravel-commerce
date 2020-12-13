@@ -4,6 +4,6 @@ namespace YiddisheKop\LaravelCommerce\Exceptions;
 
 use Exception;
 
-class CouponExpired extends Exception {
+class QuantityNotNumeric extends Exception {
 
 }

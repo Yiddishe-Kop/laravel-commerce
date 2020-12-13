@@ -2,6 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use Exception;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 use YiddisheKop\LaravelCommerce\Exceptions\QuantityNotNumeric;
@@ -55,7 +56,11 @@ trait HandlesCartItems {
 
     if (!is_numeric($quantity)) {
       throw new QuantityNotNumeric("quantityNotNumeric", 1);
-    };
+    }
+
+    if ($quantity < 0) {
+      throw new Exception("Quantity can't be less than 0", 1);
+    }
 
     $existingItem = $this->items()
       ->where('model_id', $product->id)
@@ -63,6 +68,12 @@ trait HandlesCartItems {
       ->first();
 
     if ($existingItem) {
+      if ($quantity == 0) {
+        $existingItem->delete();
+        $this->refresh();
+        return $this;
+      }
+
       $updateData = ['quantity' => $quantity];
       $options && $updateData['options'] = $options;
       $existingItem->update($updateData);

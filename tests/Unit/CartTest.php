@@ -14,7 +14,7 @@ it('can add items to the cart', function () {
   $this->assertEquals(1, $this->cart->items()->count());
 });
 
-test('if same item is added again - it just updates the quantity', function() {
+test('if same item is added again - it just updates the quantity', function () {
   $this->assertEquals(0, $this->cart->items()->count());
   $this->cart->add($this->product);
   $this->assertEquals(1, $this->cart->items()->count());
@@ -34,7 +34,22 @@ it('can update cart item quantity', function () {
   $this->assertEquals(3, $cartItem->quantity);
 });
 
+it('removes item if quantity is updated to zero', function () {
+  $this->cart->add($this->product, 3);
+  $cartItem = $this->cart->items->first();
+  $this->assertEquals(3, $cartItem->quantity);
+  $this->cart->updateItem($this->product, 0);
+  $this->assertEquals(0, $this->cart->items->count());
+});
+
+it('throws an exception if quantity updated to < zero', function () {
+  $this->expectException(Exception::class);
+  $this->cart->add($this->product, 3);
+  $this->cart->updateItem($this->product, -1);
+});
+
 it('can remove items from the cart', function () {
+  $this->cart->add($this->product);
   $this->cart->remove($this->product);
   $this->assertEquals(0, $this->cart->items()->count());
 });
@@ -51,7 +66,7 @@ it('can empty the whole cart', function () {
   $this->assertEquals(0, $this->cart->items()->count());
 });
 
-it('automatically removes deleted products from the cart', function() {
+it('automatically removes deleted products from the cart', function () {
   $this->cart->add($this->product, 3);
   expect($this->cart->items()->get())->toHaveCount(1);
   $this->product->delete();

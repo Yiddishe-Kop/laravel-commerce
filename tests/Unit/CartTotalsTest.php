@@ -97,4 +97,4 @@ test('fractional quantities (e.g. for weighable products) work well', function (
   ]);
   $cart = $this->cart->calculateTotals();
   expect($cart->items_total)->toEqual(260);
-})->only();
+});
