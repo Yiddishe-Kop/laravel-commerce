@@ -9,7 +9,7 @@ return [
 
   // default tax rate
   'tax' => [
-    'rate'               => 20,
+    'rate'               => 0.2,
     'included_in_prices' => false,
   ],
 

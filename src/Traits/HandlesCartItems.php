@@ -125,7 +125,7 @@ trait HandlesCartItems {
 
     $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
     // TODO: config('commerce.tax.included_in_prices')
-    $taxTotal = round(($itemsTotal / 100) * config('commerce.tax.rate'));
+    $taxTotal = round($itemsTotal * config('commerce.tax.rate'));
     $shippingTotal = config('commerce.shipping.cost');
     $couponDiscount = $this->getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal);
     $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
