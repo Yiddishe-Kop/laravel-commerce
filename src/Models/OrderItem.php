@@ -12,8 +12,8 @@ class OrderItem extends Model {
   protected $guarded = [];
 
   protected $casts = [
-    'price', Money::class,
-    'options' => 'array'
+    'price' => Money::class,
+    'options' => 'array',
   ];
 
   public function order() {
