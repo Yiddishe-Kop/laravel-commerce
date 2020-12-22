@@ -3,6 +3,7 @@
 namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use YiddisheKop\LaravelCommerce\Casts\Money;
 
 class OrderItem extends Model {
 
@@ -11,6 +12,7 @@ class OrderItem extends Model {
   protected $guarded = [];
 
   protected $casts = [
+    'price', Money::class,
     'options' => 'array'
   ];
 
