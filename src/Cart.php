@@ -17,6 +17,18 @@ class Cart {
 
   public function get(): Order {
     $this->user = auth()->id();
+
+    if ($this->user) {
+      if ($cart = Order
+        ::whereStatus(Order::STATUS_CART)
+        ->where('user_id', $this->user)
+        ->with('items')
+        ->first()
+      ) {
+        return $cart;
+      }
+    }
+
     return $this->getOrMakeSessionCart();
   }
 
