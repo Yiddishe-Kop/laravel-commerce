@@ -15,7 +15,6 @@ class CreateOrdersTable extends Migration {
       $table->foreignId('coupon_id')->nullable();
 
       $table->string('status')->default(Order::STATUS_CART);
-      $table->string('list_name')->nullable();
       $table->string('currency')->default(config('commerce.currency'));
       $table->timestamp('paid_at')->nullable();
 
