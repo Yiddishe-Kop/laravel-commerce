@@ -22,6 +22,7 @@ class Order extends Model {
 
   protected $casts = [
     'is_paid' => 'boolean',
+    'gateway_data' => 'array',
   ];
 
   protected $appends = [

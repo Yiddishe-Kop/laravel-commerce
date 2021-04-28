@@ -14,5 +14,4 @@ class CheckoutController extends Controller {
 
     return $gateway->purchase($order, $request);
   }
-
 }
