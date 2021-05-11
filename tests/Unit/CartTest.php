@@ -22,7 +22,7 @@ it('dispatches AddedToCart event', function () {
     Event::assertDispatched(AddedToCart::class, function (AddedToCart $event) {
         return $event->order->id == $this->cart->id && $event->product->id == $this->product->id;
     });
-})->only();
+});
 
 test('if same item is added again - it just updates the quantity', function () {
     $this->assertEquals(0, $this->cart->items()->count());

@@ -5,6 +5,7 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Events\AddedToCart;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
+use YiddisheKop\LaravelCommerce\Helpers\Vat;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
@@ -108,8 +109,8 @@ trait HandlesCartItems {
 
         $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
         // TODO: config('commerce.tax.included_in_prices')
-        $taxTotal = round(($itemsTotal / 100) * config('commerce.tax.rate'));
-        $shippingTotal = config('commerce.shipping.cost');
+        $taxTotal = $this->calculateTax($itemsTotal);
+        $shippingTotal = config('commerce.shipping.cost') * 100;
         $couponDiscount = $this->getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal);
         $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
 
@@ -121,6 +122,19 @@ trait HandlesCartItems {
             'grand_total' => $grandTotal,
         ]);
         return $this;
+    }
+
+    /**
+     *  Calculate tax_total
+     */
+    public function calculateTax(&$itemsTotal) {
+        if (config('commerce.tax.included_in_prices')) {
+            $taxTotal = Vat::of($itemsTotal);
+            $itemsTotal -= $taxTotal;
+        } else {
+            $taxTotal = (int) ($itemsTotal * config('commerce.tax.rate')); // add vat
+        }
+        return $taxTotal;
     }
 
     /**

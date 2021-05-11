@@ -7,16 +7,15 @@ use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 use YiddisheKop\LaravelCommerce\Traits\Purchasable;
 
 class Package extends Model implements PurchasableContract {
-  use Purchasable;
+    use Purchasable;
 
-  protected $guarded = [];
+    protected $guarded = [];
 
-  public function getTitle(): string {
-    return $this->title;
-  }
+    public function getTitle(): string {
+        return $this->title;
+    }
 
-  public function getPrice($currency = null, $options = null): int {
-    return $this->price;
-  }
-
+    public function getPrice($currency = null, $options = null): int {
+        return $this->price * 100;
+    }
 }

@@ -11,8 +11,8 @@ use YiddisheKop\LaravelCommerce\Models\Order;
 class AddedToCart {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $order;
-    public $product;
+    public Order $order;
+    public Purchasable $product;
 
     public function __construct(Order $order, Purchasable $product) {
         $this->order = $order;
