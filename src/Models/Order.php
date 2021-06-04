@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use YiddisheKop\LaravelCommerce\Traits\HandlesOrders;
 use YiddisheKop\LaravelCommerce\Traits\HandlesCartItems;
 
-class Order extends Model {
+class Order extends Model
+{
     use HasFactory, HandlesCartItems, HandlesOrders;
 
     const STATUS_CART = 'cart';
@@ -29,32 +30,39 @@ class Order extends Model {
         'timeAgo',
     ];
 
-    public function items() {
+    public function items()
+    {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function coupon() {
+    public function coupon()
+    {
         return $this->belongsTo(Coupon::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(config('user', 'App\\User'));
     }
 
-    public function getTimeAgoAttribute() {
+    public function getTimeAgoAttribute()
+    {
         if (!$this->paid_at) return null;
         return $this->paid_at->diffForHumans();
     }
 
-    public function scopeIsCart($query) {
+    public function scopeIsCart($query)
+    {
         return $query->where('status', self::STATUS_CART);
     }
 
-    public function scopeCompleted($query) {
+    public function scopeCompleted($query)
+    {
         return $query->where('status', self::STATUS_COMPLETED);
     }
 
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
         static::deleting(function (self $cart) {

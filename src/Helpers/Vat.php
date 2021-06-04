@@ -18,13 +18,15 @@ namespace YiddisheKop\LaravelCommerce\Helpers;
  *
  * Built to work with cents (as it rounds the results to the nearest cent)
  */
-class Vat {
+class Vat
+{
     /**
      * Get VAT from given price
      *
      * returns the VAT amount
      */
-    public static function of(int $price) {
+    public static function of(int $price)
+    {
         return round($price / (1 + (1 / config('commerce.tax.rate'))), 4);
     }
 
@@ -33,7 +35,8 @@ class Vat {
      *
      * returns the VAT amount
      */
-    public static function for(int $price) {
+    public static function for(int $price)
+    {
         return round($price * config('commerce.tax.rate'), 4);
     }
 
@@ -42,7 +45,8 @@ class Vat {
      *
      * returns price with VAT
      */
-    public static function add(int $price) {
+    public static function add(int $price)
+    {
         return round($price + ($price * config('commerce.tax.rate')), 4);
     }
 
@@ -51,7 +55,8 @@ class Vat {
      *
      * returns price before VAT
      */
-    public static function remove(int $price) {
+    public static function remove(int $price)
+    {
         return round($price / (1 + config('commerce.tax.rate')), 4);
     }
 }

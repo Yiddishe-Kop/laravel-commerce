@@ -6,16 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 use YiddisheKop\LaravelCommerce\Traits\Purchasable;
 
-class Product extends Model implements PurchasableContract {
+class Product extends Model implements PurchasableContract
+{
     use Purchasable;
 
     protected $guarded = [];
 
-    public function getTitle(): string {
+    public function getTitle(): string
+    {
         return $this->title;
     }
 
-    public function getPrice($currency = null, $options = null): int {
+    public function getPrice($currency = null, $options = null): int
+    {
         // this is just for testing
         $price = $this->price;
 

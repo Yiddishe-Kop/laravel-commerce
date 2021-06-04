@@ -6,59 +6,65 @@ use Illuminate\Support\Traits\ForwardsCalls;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Traits\SessionCart;
 
-class Cart {
-  use SessionCart, ForwardsCalls;
+class Cart
+{
+    use SessionCart, ForwardsCalls;
 
-  protected $user;
+    protected $user;
 
-  public function __construct($user = null) {
-    $this->user = auth()->id();
-  }
-
-  public function get(): Order {
-    $this->user = auth()->id();
-
-    if ($this->user) {
-      if ($cart = Order
-        ::whereStatus(Order::STATUS_CART)
-        ->where('user_id', $this->user)
-        ->with('items')
-        ->first()
-      ) {
-        return $cart;
-      }
+    public function __construct($user = null)
+    {
+        $this->user = auth()->id();
     }
 
-    return $this->getOrMakeSessionCart();
-  }
+    public function get(): Order
+    {
+        $this->user = auth()->id();
 
-  public function find($id): Order {
-    $order = Order
-      ::isCart()
-      ->with('items')
-      ->find($id);
+        if ($this->user) {
+            if ($cart = Order
+                ::whereStatus(Order::STATUS_CART)
+                ->where('user_id', $this->user)
+                ->with('items')
+                ->first()
+            ) {
+                return $cart;
+            }
+        }
 
-    if (!$order) {
-      return $this->refreshSessionCart();
+        return $this->getOrMakeSessionCart();
     }
 
-    if ($this->user && !$order->user_id) {
-      $order->update([
-        'user_id' => $this->user,
-      ]);
+    public function find($id): Order
+    {
+        $order = Order
+            ::isCart()
+            ->with('items')
+            ->find($id);
+
+        if (!$order) {
+            return $this->refreshSessionCart();
+        }
+
+        if ($this->user && !$order->user_id) {
+            $order->update([
+                'user_id' => $this->user,
+            ]);
+        }
+
+        return $order;
     }
 
-    return $order;
-  }
+    public function create($attributes = [])
+    {
+        return Order::create($attributes);
+    }
 
-  public function create($attributes = []) {
-    return Order::create($attributes);
-  }
-
-  /**
-   * Pass dynamic method calls to the Order.
-   */
-  public function __call($method, $arguments) {
-    return $this->forwardCallTo($this->get(), $method, $arguments);
-  }
+    /**
+     * Pass dynamic method calls to the Order.
+     */
+    public function __call($method, $arguments)
+    {
+        return $this->forwardCallTo($this->get(), $method, $arguments);
+    }
 }

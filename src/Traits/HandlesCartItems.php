@@ -10,13 +10,16 @@ use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
-trait HandlesCartItems {
+trait HandlesCartItems
+{
 
-    public function items() {
+    public function items()
+    {
         return $this->hasMany(OrderItem::class);
     }
 
-    public function add(Purchasable $product, int $quantity = 1, array $options = null): self {
+    public function add(Purchasable $product, int $quantity = 1, array $options = null): self
+    {
 
         $existingItem = $this->items()
             ->where('model_id', $product->id)
@@ -51,7 +54,8 @@ trait HandlesCartItems {
         return $this;
     }
 
-    public function updateItem(Purchasable $product, int $quantity = 1, array $options = null): self {
+    public function updateItem(Purchasable $product, int $quantity = 1, array $options = null): self
+    {
         $existingItem = $this->items()
             ->where('model_id', $product->id)
             ->where('model_type', get_class($product))
@@ -66,18 +70,21 @@ trait HandlesCartItems {
         return $this;
     }
 
-    public function remove(Purchasable $product): self {
+    public function remove(Purchasable $product): self
+    {
         OrderItem::where('model_id', $product->id)
             ->where('model_type', get_class($product))
             ->delete();
         return $this;
     }
 
-    public function empty() {
+    public function empty()
+    {
         $this->items()->delete();
     }
 
-    public function applyCoupon(string $code) {
+    public function applyCoupon(string $code)
+    {
         if ($coupon = Coupon::where('code', $code)->first()) {
             return $coupon->apply($this);
         } else {
@@ -85,13 +92,15 @@ trait HandlesCartItems {
         }
     }
 
-    public function removeCoupon() {
+    public function removeCoupon()
+    {
         $this->update([
             'coupon_id' => null
         ]);
     }
 
-    private function getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal) {
+    private function getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal)
+    {
         $couponDiscount = 0;
         $originalPrice = $itemsTotal;
         config('commerce.coupon.include_tax') && $originalPrice += $taxTotal;
@@ -103,7 +112,8 @@ trait HandlesCartItems {
         return $couponDiscount;
     }
 
-    public function calculateTotals(): self {
+    public function calculateTotals(): self
+    {
 
         $this->refreshItems();
 
@@ -127,7 +137,8 @@ trait HandlesCartItems {
     /**
      *  Calculate tax_total
      */
-    public function calculateTax(&$itemsTotal) {
+    public function calculateTax(&$itemsTotal)
+    {
         if (config('commerce.tax.included_in_prices')) {
             $taxTotal = Vat::of($itemsTotal);
             $itemsTotal -= $taxTotal;
@@ -144,7 +155,8 @@ trait HandlesCartItems {
      *
      *  (we can't use a constraint, as it's a morphable relationship)
      */
-    protected function refreshItems() {
+    protected function refreshItems()
+    {
 
         $cartItems = $this->items()
             ->with('model')

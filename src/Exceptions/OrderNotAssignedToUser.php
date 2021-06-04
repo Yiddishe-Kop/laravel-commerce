@@ -4,6 +4,6 @@ namespace YiddisheKop\LaravelCommerce\Exceptions;
 
 use Exception;
 
-class OrderNotAssignedToUser extends Exception {
-
+class OrderNotAssignedToUser extends Exception
+{
 }

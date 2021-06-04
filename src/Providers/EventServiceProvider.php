@@ -6,21 +6,23 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
 use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
 
-class EventServiceProvider extends ServiceProvider {
+class EventServiceProvider extends ServiceProvider
+{
 
 
-  protected $listen = [
-    CouponRedeemed::class => [
-      IncrementCouponTimesUsed::class,
-    ]
-  ];
+    protected $listen = [
+        CouponRedeemed::class => [
+            IncrementCouponTimesUsed::class,
+        ]
+    ];
 
-  /**
-   * Register any events for your application.
-   *
-   * @return void
-   */
-  public function boot() {
-    parent::boot();
-  }
+    /**
+     * Register any events for your application.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+    }
 }

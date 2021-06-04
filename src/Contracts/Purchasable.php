@@ -2,7 +2,8 @@
 
 namespace YiddisheKop\LaravelCommerce\Contracts;
 
-interface Purchasable {
+interface Purchasable
+{
 
     /**
      * Get the title of the product

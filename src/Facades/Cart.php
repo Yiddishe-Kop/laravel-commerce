@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see \YiddisheKop\LaravelCommerce\Cart
  */
-class Cart extends Facade {
+class Cart extends Facade
+{
 
-  protected static function getFacadeAccessor() {
-    return 'cart';
-  }
-
+    protected static function getFacadeAccessor()
+    {
+        return 'cart';
+    }
 }

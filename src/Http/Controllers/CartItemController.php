@@ -6,25 +6,28 @@ use Illuminate\Http\Request;
 use YiddisheKop\LaravelCommerce\Facades\Cart;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
-class CartItemController extends Controller {
+class CartItemController extends Controller
+{
 
-  public function store(Request $request) {
+    public function store(Request $request)
+    {
 
-    $request->validate([
-      'product_type' => 'required|string',
-      'product_id' => 'required',
-      'quantity' => 'nullable|numeric',
-    ]);
+        $request->validate([
+            'product_type' => 'required|string',
+            'product_id' => 'required',
+            'quantity' => 'nullable|numeric',
+        ]);
 
-    $product = $request->product_type::findOrFail($request->product_id);
-    Cart::add($product, $request->quantity ?? 1);
+        $product = $request->product_type::findOrFail($request->product_id);
+        Cart::add($product, $request->quantity ?? 1);
 
-    return back()->with('success', __('Product has been added to your cart.'));
-  }
+        return back()->with('success', __('Product has been added to your cart.'));
+    }
 
-  public function destroy(OrderItem $item) {
-    $item->delete();
+    public function destroy(OrderItem $item)
+    {
+        $item->delete();
 
-    return back()->with('success', __('Product has been removed from your cart.'));
-  }
+        return back()->with('success', __('Product has been removed from your cart.'));
+    }
 }

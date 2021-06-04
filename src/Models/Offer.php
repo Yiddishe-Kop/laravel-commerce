@@ -4,7 +4,8 @@ namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Offer extends Model {
+class Offer extends Model
+{
 
     const TYPE_PERCENTAGE = 'percentage';
     const TYPE_FIXED = 'fixed';
@@ -17,7 +18,8 @@ class Offer extends Model {
     ];
 
     // scopes
-    public function scopeValid($q) {
+    public function scopeValid($q)
+    {
         $q->where(function ($q) {
             $q->where('valid_from', '<', now())
                 ->orWhereNull('valid_from');
@@ -30,7 +32,8 @@ class Offer extends Model {
     /**
      * Get first available offer for the order
      */
-    public static function getFor(Order $order) {
+    public static function getFor(Order $order)
+    {
         $productTypeCounts = $order->items
             ->groupBy('model_type')
             ->mapWithKeys(function ($item, $key) {
@@ -60,7 +63,8 @@ class Offer extends Model {
         return $appliedOffer;
     }
 
-    public function isValidFor(OrderItem $item) {
+    public function isValidFor(OrderItem $item)
+    {
         if (!$this->product_type) return true;
         return $this->product_type == $item->model_type;
     }
@@ -68,7 +72,8 @@ class Offer extends Model {
     /**
      * Apply an offer on a orderItem
      */
-    public function apply(OrderItem $item) {
+    public function apply(OrderItem $item)
+    {
 
         $product = $item->model;
         $order = $item->order;
