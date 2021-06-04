@@ -21,13 +21,17 @@ class CartItemController extends Controller
         $product = $request->product_type::findOrFail($request->product_id);
         Cart::add($product, $request->quantity ?? 1);
 
-        return back()->with('success', __('Product has been added to your cart.'));
+        return back()->with('success', __('Product has been added to your cart.', [
+            'productTitle' => $product->getTitle()
+        ]));
     }
 
     public function destroy(OrderItem $item)
     {
         $item->delete();
 
-        return back()->with('success', __('Product has been removed from your cart.'));
+        return back()->with('success', __('Product has been removed from your cart.', [
+            'productTitle' => $item->title
+        ]));
     }
 }
