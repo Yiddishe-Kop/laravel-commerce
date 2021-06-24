@@ -6,6 +6,7 @@ use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponLimitReached;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
+use YiddisheKop\LaravelCommerce\Helpers\Vat;
 use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
@@ -49,6 +50,32 @@ test('Can apply FIXED coupon to order', function () {
     expect($this->cart->grand_total)->toEqual(361200 - 200);
 });
 
+test('Can apply FIXED coupon to order [config: exc. tax]', function () {
+
+    config([
+        'commerce.coupon.include_tax' => false
+    ]);
+
+    $coupon = Coupon::create([
+        'code' => 'BLACK-FRIDAY-2021',
+        'type' => Coupon::TYPE_FIXED,
+        'discount' => 200,
+    ]);
+
+    $this->cart->applyCoupon($coupon->code);
+    $this->cart->calculateTotals();
+
+    expect($this->cart->coupon->id)->toBe($coupon->id);
+    expect($this->cart->coupon_total)->toEqual($coupon->discount);
+    // shipping: 1200
+    // itemsTotal: 300000
+    // tax: 60000
+    $expectedTaxTotal = Vat::for($this->cart->items_total - $this->cart->coupon_total);
+
+    expect($this->cart->tax_total)->toEqual($expectedTaxTotal);
+    expect($this->cart->grand_total)->toEqual($this->cart->items_total + $this->cart->shipping_total + $expectedTaxTotal - $this->cart->coupon_total);
+});
+
 test('Can apply PERCENTAGE coupon to order', function () {
 
     $this->cart->applyCoupon($this->coupon->code);
@@ -56,11 +83,29 @@ test('Can apply PERCENTAGE coupon to order', function () {
 
     expect($this->cart->coupon->id)->toBe($this->coupon->id);
     // shipping: 1200
-    // tax: 60000
     // itemsTotal: 361200
     // expected coupon discount: 36120
+    // tax: 60000
     expect($this->cart->coupon_total)->toEqual(36120);
     expect($this->cart->grand_total)->toEqual(361200 - 36120);
+});
+
+test('Can apply PERCENTAGE coupon to order  [config: exc. tax]', function () {
+
+    config([
+        'commerce.coupon.include_tax' => false
+    ]);
+
+    $this->cart->applyCoupon($this->coupon->code);
+    $this->cart->calculateTotals();
+
+    expect($this->cart->coupon->id)->toBe($this->coupon->id);
+
+    $expectedCouponTotal = ($this->cart->items_total + $this->cart->shipping_total) * 0.1;
+    $expectedTaxTotal = Vat::for($this->cart->items_total - $this->cart->coupon_total);
+    expect($this->cart->coupon_total)->toEqual($expectedCouponTotal);
+    expect($this->cart->tax_total)->toEqual($expectedTaxTotal);
+    expect($this->cart->grand_total)->toEqual($this->cart->items_total + $this->cart->tax_total + $this->cart->shipping_total - $expectedCouponTotal);
 });
 
 it('throws an exception if trying to apply invalid coupon code', function () {

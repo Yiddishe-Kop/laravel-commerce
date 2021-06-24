@@ -99,11 +99,10 @@ trait HandlesCartItems
         ]);
     }
 
-    private function getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal)
+    private function getCouponDiscount($itemsTotal, $shippingTotal)
     {
         $couponDiscount = 0;
         $originalPrice = $itemsTotal;
-        config('commerce.coupon.include_tax') && $originalPrice += $taxTotal;
         config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
 
         if ($this->coupon) {
@@ -118,10 +117,19 @@ trait HandlesCartItems
         $this->refreshItems();
 
         $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
-        // TODO: config('commerce.tax.included_in_prices')
-        $taxTotal = $this->calculateTax($itemsTotal);
         $shippingTotal = config('commerce.shipping.cost') * 100;
-        $couponDiscount = $this->getCouponDiscount($itemsTotal, $taxTotal, $shippingTotal);
+
+        if (config('commerce.coupon.include_tax')) {
+            // calculate tax, then coupon
+            $taxTotal = $this->calculateTax($itemsTotal);
+            $couponDiscount = $this->getCouponDiscount($itemsTotal + $taxTotal, $shippingTotal);
+        } else {
+            // calculate coupon, then tax
+            $couponDiscount = $this->getCouponDiscount($itemsTotal, $shippingTotal);
+            $taxTotal = $this->calculateTax($itemsTotal, $couponDiscount);
+        }
+
+        // TODO: config('commerce.tax.included_in_prices')
         $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
 
         $this->update([
@@ -137,13 +145,14 @@ trait HandlesCartItems
     /**
      *  Calculate tax_total
      */
-    public function calculateTax(&$itemsTotal)
+    public function calculateTax(&$itemsTotal, $couponDiscount = 0)
     {
+        $taxableAmount = $itemsTotal - $couponDiscount;
         if (config('commerce.tax.included_in_prices')) {
-            $taxTotal = Vat::of($itemsTotal);
+            $taxTotal = Vat::of($taxableAmount);
             $itemsTotal -= $taxTotal;
         } else {
-            $taxTotal = (int) ($itemsTotal * config('commerce.tax.rate')); // add vat
+            $taxTotal = (int) ($taxableAmount * config('commerce.tax.rate')); // add vat
         }
         return $taxTotal;
     }
