@@ -152,7 +152,7 @@ trait HandlesCartItems
             $taxTotal = Vat::of($taxableAmount);
             $itemsTotal -= $taxTotal;
         } else {
-            $taxTotal = (int) ($taxableAmount * config('commerce.tax.rate')); // add vat
+            $taxTotal = round($taxableAmount * config('commerce.tax.rate')); // add vat
         }
         return $taxTotal;
     }
