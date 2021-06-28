@@ -17,5 +17,5 @@ interface Purchasable
      *
      *  @return int price in cents
      */
-    public function getPrice($currency = null, $options = null): int;
+    public function getPrice($currency = null, $options = null): int|float;
 }
