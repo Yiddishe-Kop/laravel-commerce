@@ -1,5 +1,7 @@
 [![laravel-commerce](https://laravel-commerce.yiddishe-kop.com/preview-light.png)](https://laravel-commerce.yiddishe-kop.com/)
 
+[![Open in Visual Studio Code](https://open.vscode.dev/badges/open-in-vscode.svg)](https://open.vscode.dev/yiddishe-kop/laravel-commerce)
+
 # A simple commerce package for Laravel
 
 <!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
