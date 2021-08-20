@@ -99,6 +99,14 @@ trait HandlesCartItems
         ]);
     }
 
+    private function getShippingTotal()
+    {
+        if ($shippingCalculator = config('commerce.shipping.calculator')) {
+            return (new $shippingCalculator)->calculate($this);
+        }
+        return config('commerce.shipping.cost') * 100;
+    }
+
     private function getCouponDiscount($itemsTotal, $shippingTotal)
     {
         $couponDiscount = 0;
@@ -117,7 +125,7 @@ trait HandlesCartItems
         $this->refreshItems();
 
         $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
-        $shippingTotal = config('commerce.shipping.cost') * 100;
+        $shippingTotal = $this->getShippingTotal();
 
         if (config('commerce.coupon.include_tax')) {
             // calculate tax, then coupon

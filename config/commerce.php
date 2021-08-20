@@ -1,6 +1,7 @@
 <?php
 
 use YiddisheKop\LaravelCommerce\Gateways\Example;
+use YiddisheKop\LaravelCommerce\Helpers\ExampleShippingCalculator;
 
 return [
 
@@ -21,7 +22,8 @@ return [
 
     // default shipping amount
     'shipping' => [
-        'cost' => 12
+        'calculator' => ExampleShippingCalculator::class, // if you need to calculate shipping depending on the order, use a class that implements a `calculate(Order $order)` method
+        'cost' => 12, // if calculator is null, this will be used
     ],
 
     // your user model - replace this with your user model
