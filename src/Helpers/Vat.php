@@ -27,7 +27,10 @@ class Vat
      */
     public static function of(int $price)
     {
-        return round($price / (1 + (1 / config('commerce.tax.rate'))), 4);
+        $taxRate = config('commerce.tax.rate');
+        if ($taxRate == 0) return 0;
+
+        return round($price / (1 + (1 / $taxRate)), 4);
     }
 
     /**
@@ -37,7 +40,10 @@ class Vat
      */
     public static function for(int $price)
     {
-        return round($price * config('commerce.tax.rate'), 4);
+        $taxRate = config('commerce.tax.rate');
+        if ($taxRate == 0) return 0;
+
+        return round($price * $taxRate, 4);
     }
 
     /**
@@ -47,7 +53,10 @@ class Vat
      */
     public static function add(int $price)
     {
-        return round($price + ($price * config('commerce.tax.rate')), 4);
+        $taxRate = config('commerce.tax.rate');
+        if ($taxRate == 0) return $price;
+
+        return round($price + ($price * $taxRate), 4);
     }
 
     /**
@@ -57,6 +66,9 @@ class Vat
      */
     public static function remove(int $price)
     {
-        return round($price / (1 + config('commerce.tax.rate')), 4);
+        $taxRate = config('commerce.tax.rate');
+        if ($taxRate == 0) return $price;
+
+        return round($price / (1 + $taxRate), 4);
     }
 }
