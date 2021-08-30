@@ -13,6 +13,11 @@ beforeEach(function () {
             'title' => 'BA Vilna',
             'price' => 444
         ]), 5);
+
+    config([
+        'commerce.shipping.calculator' => null,
+        'commerce.offers.calculator' => null,
+    ]);
 });
 
 

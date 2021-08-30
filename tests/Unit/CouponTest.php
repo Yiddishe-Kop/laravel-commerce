@@ -30,6 +30,11 @@ beforeEach(function () {
         'discount' => 10,
         'times_used' => 0,
     ]);
+
+    config([
+        'commerce.shipping.calculator' => null,
+        'commerce.offers.calculator' => null,
+    ]);
 });
 
 test('Can apply FIXED coupon to order', function () {

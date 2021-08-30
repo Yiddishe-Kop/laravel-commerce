@@ -23,7 +23,7 @@ it('applies simple flat shipping rate', function () {
     ]);
     $this->cart->calculateTotals();
     expect($this->cart->shipping_total)->toEqual(1200);
-})->only();
+});
 
 it('can calculate shipping through the class', function () {
     config([
@@ -32,4 +32,4 @@ it('can calculate shipping through the class', function () {
     ]);
     $this->cart->calculateTotals();
     expect($this->cart->shipping_total)->toEqual(2400);
-})->only();
+});

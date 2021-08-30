@@ -15,6 +15,11 @@ beforeEach(function () {
         'email' => 'yehuda@yiddishe-kop.com',
         'password' => '12345678'
     ]);
+
+    config([
+        'commerce.shipping.calculator' => null,
+        'commerce.offers.calculator' => null,
+    ]);
 });
 
 

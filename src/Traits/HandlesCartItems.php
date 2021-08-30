@@ -99,6 +99,15 @@ trait HandlesCartItems
         ]);
     }
 
+    private function getItemsTotal()
+    {
+        if ($offersCalculator = config('commerce.offers.calculator')) {
+            $offersCalculator::apply($this);
+        }
+
+        return $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
+    }
+
     private function getShippingTotal()
     {
         if ($shippingCalculator = config('commerce.shipping.calculator')) {
@@ -124,7 +133,7 @@ trait HandlesCartItems
 
         $this->refreshItems();
 
-        $itemsTotal = $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
+        $itemsTotal = $this->getItemsTotal();
         $shippingTotal = $this->getShippingTotal();
 
         if (config('commerce.coupon.include_tax')) {

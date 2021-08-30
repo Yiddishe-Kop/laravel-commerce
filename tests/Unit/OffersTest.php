@@ -18,6 +18,11 @@ beforeEach(function () {
             'title' => 'Hotel Weekend Package',
             'price' => 4000
         ]));
+
+    config([
+        'commerce.shipping.calculator' => null,
+        'commerce.offers.calculator' => null,
+    ]);
 });
 
 test('Offers get applied to cart total', function () {

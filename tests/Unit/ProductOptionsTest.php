@@ -2,6 +2,13 @@
 
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
+beforeEach(function () {
+    config([
+        'commerce.shipping.calculator' => null,
+        'commerce.offers.calculator' => null,
+    ]);
+});
+
 it('can add product to cart with options, and update the options', function () {
 
     $product = Product::create([

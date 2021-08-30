@@ -1,6 +1,7 @@
 <?php
 
 use YiddisheKop\LaravelCommerce\Gateways\Example;
+use YiddisheKop\LaravelCommerce\Helpers\ExampleOffersCalculator;
 use YiddisheKop\LaravelCommerce\Helpers\ExampleShippingCalculator;
 
 return [
@@ -20,10 +21,32 @@ return [
         'include_shipping' => true, // if to apply the coupon after shipping
     ],
 
-    // default shipping amount
+    /*
+    |--------------------------------------------------------------------------
+    | Shipping
+    |--------------------------------------------------------------------------
+    |
+    | You can set a fixed shipping amount. If you need to calculate the cost
+    | according to each order, just pass a class that implements a
+    | `calculate(Order $order)` method.
+    */
     'shipping' => [
-        'calculator' => ExampleShippingCalculator::class, // if you need to calculate shipping depending on the order, use a class that implements a `calculate(Order $order)` method
+        'calculator' => ExampleShippingCalculator::class,
         'cost' => 12, // if calculator is null, this will be used
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Offers Calculator
+    |--------------------------------------------------------------------------
+    |
+    | You can apply discounts to order_items by creating a class that implements
+    | an `apply(Order $order)` method. This method will get the `Order`
+    | passed to it as a parameter. You should apply offers by setting
+    | the `discount` on order_items.
+    */
+    'offers' => [
+        'calculator' => ExampleOffersCalculator::class,
     ],
 
     // your user model - replace this with your user model
