@@ -2,10 +2,10 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use YiddisheKop\LaravelCommerce\Models\Coupon;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponLimitReached;
-use YiddisheKop\LaravelCommerce\Models\Coupon;
-use YiddisheKop\LaravelCommerce\Models\Order;
 
 /**
  * Coupon methods

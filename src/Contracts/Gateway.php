@@ -3,7 +3,6 @@
 namespace YiddisheKop\LaravelCommerce\Contracts;
 
 use Illuminate\Http\Request;
-use YiddisheKop\LaravelCommerce\Models\Order;
 
 interface Gateway
 {

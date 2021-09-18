@@ -12,12 +12,6 @@ use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HandlesCartItems
 {
-
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
-
     public function add(Purchasable $product, int $quantity = 1, array $options = null): self
     {
 

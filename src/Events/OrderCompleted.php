@@ -5,7 +5,7 @@ namespace  YiddisheKop\LaravelCommerce\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class OrderCompleted
 {

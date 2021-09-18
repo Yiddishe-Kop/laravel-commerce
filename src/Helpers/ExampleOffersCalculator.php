@@ -2,7 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Helpers;
 
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class ExampleOffersCalculator
 {

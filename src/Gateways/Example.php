@@ -4,7 +4,7 @@ namespace YiddisheKop\LaravelCommerce\Gateways;
 
 use Illuminate\Http\Request;
 use YiddisheKop\LaravelCommerce\Contracts\Gateway;
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class Example implements Gateway
 {

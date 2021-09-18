@@ -3,6 +3,7 @@
 namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class Offer extends Model
 {

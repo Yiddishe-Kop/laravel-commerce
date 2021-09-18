@@ -2,11 +2,11 @@
 
 namespace  YiddisheKop\LaravelCommerce\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
-use YiddisheKop\LaravelCommerce\Models\Order;
 
 class AddedToCart
 {
