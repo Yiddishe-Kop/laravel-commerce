@@ -4,8 +4,8 @@
 
 # A simple commerce package for Laravel
 
-<!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce) -->
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
+[![Total Downloads](https://img.shields.io/packagist/dt/yiddishe-kop/laravel-commerce.svg?style=flat-square)](https://packagist.org/packages/yiddishe-kop/laravel-commerce)
 
 After searching for a simple ecommerce package for Laravel and not finding a lightweight simple to use solution - I decided to attempt to create one myself.
 
@@ -14,11 +14,11 @@ Read the official documentation here: https://laravel-commerce.yiddishe-kop.com/
 ### Features
 
 - [x] Cart (stored in the session - so guests can also have a cart)
-- [ ] Orders
-- [ ] Coupons
-- [ ] Special Offers
-- [ ] Multiple Currencies
-- [ ] Multiple Payment Gateways
+- [x] Orders
+- [x] Coupons
+- [x] Special Offers
+- [x] Multiple Currencies
+- [x] Multiple Payment Gateways
 
 This package only implements the backend logic, and leaves you with full control over the frontend.
 
