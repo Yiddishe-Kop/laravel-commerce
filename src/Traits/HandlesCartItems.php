@@ -21,7 +21,7 @@ trait HandlesCartItems
             ->first();
 
         // if item is already in cart - just increment its quantity
-        if ($existingItem) {
+        if ($existingItem && $options == $existingItem->options) {
             $existingItem->increment('quantity', $quantity);
 
             // update options

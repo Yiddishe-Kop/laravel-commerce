@@ -24,7 +24,7 @@ it('dispatches AddedToCart event', function () {
     });
 });
 
-test('if same item is added again - it just updates the quantity', function () {
+test('if same item is added again - it just updates the quantity [except with different options]', function () {
     $this->assertEquals(0, $this->cart->items()->count());
     $this->cart->add($this->product);
     $this->assertEquals(1, $this->cart->items()->count());
@@ -32,6 +32,10 @@ test('if same item is added again - it just updates the quantity', function () {
     $this->cart->add($this->product);
     $this->assertEquals(1, $this->cart->items()->count());
     $this->assertEquals(2, $this->cart->items()->first()->quantity);
+
+    // with different options
+    $this->cart->add($this->product, 1, ['size' => 'large']);
+    $this->assertEquals(2, $this->cart->items()->count());
 });
 
 it('can update cart item quantity', function () {
