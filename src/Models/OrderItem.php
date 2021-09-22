@@ -24,4 +24,9 @@ class OrderItem extends Model
     {
         return $this->morphTo();
     }
+
+    public function setOptionsAttribute($value)
+    {
+        $this->attributes['options'] = json_encode($value);
+    }
 }

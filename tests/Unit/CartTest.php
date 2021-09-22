@@ -36,6 +36,26 @@ test('if same item is added again - it just updates the quantity [except with di
     // with different options
     $this->cart->add($this->product, 1, ['size' => 'large']);
     $this->assertEquals(2, $this->cart->items()->count());
+
+    $this->cart->add($this->product, 1, ['size' => 'large']);
+    $this->assertEquals(2, $this->cart->items()->count());
+    $this->assertEquals(2, $this->cart->items()->get()->last()->quantity);
+
+    $this->cart->add($this->product, 1, ['size' => 'large']);
+    $this->assertEquals(2, $this->cart->items()->count());
+    $this->assertEquals(3, $this->cart->items()->get()->last()->quantity);
+
+    $this->cart->add($this->product, 1, ['size' => 'small']);
+    $this->assertEquals(3, $this->cart->items()->count());
+    $this->assertEquals(1, $this->cart->items()->get()->last()->quantity);
+
+    $this->cart->add($this->product, 1, ['size' => 'small']);
+    $this->assertEquals(3, $this->cart->items()->count());
+    $this->assertEquals(2, $this->cart->items()->get()->last()->quantity);
+
+    $this->cart->add($this->product);
+    $this->assertEquals(3, $this->cart->items()->count());
+    $this->assertEquals(3, $this->cart->items()->first()->quantity);
 });
 
 it('can update cart item quantity', function () {
