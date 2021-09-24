@@ -27,7 +27,6 @@ class Order extends Model implements OrderContract
     ];
 
     protected $casts = [
-        'is_paid' => 'boolean',
         'gateway_data' => 'array',
     ];
 

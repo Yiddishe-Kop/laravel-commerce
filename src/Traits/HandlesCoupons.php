@@ -27,6 +27,15 @@ trait HandlesCoupons
     }
 
     /**
+     * Usage limit reached
+     */
+    public function usageLimitReached(): bool
+    {
+        if (!is_null($this->max_uses) && $this->times_used >= $this->max_uses) return true;
+        return false;
+    }
+
+    /**
      * Apply the coupon to an Order
      */
     public function apply(Order $order)
@@ -34,7 +43,7 @@ trait HandlesCoupons
         if (!$this->isValid()) {
             throw new CouponExpired("The coupon is no longer valid", 1);
         }
-        if (!is_null($this->max_uses) && $this->times_used >= $this->max_uses) {
+        if ($this->usageLimitReached()) {
             throw new CouponLimitReached("The coupon has been used to it's max", 1);
         }
         $order->update([

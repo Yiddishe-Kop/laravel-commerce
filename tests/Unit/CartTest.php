@@ -7,8 +7,8 @@ use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
 test('new cart is unpaid by default', function () {
     $this->assertEquals(1, Order::count());
-    $this->assertEquals('cart', $this->cart->status);
-    $this->assertEquals(false, $this->cart->is_paid);
+    $this->assertEquals(Order::STATUS_CART, $this->cart->status);
+    $this->assertEquals(null, $this->cart->paid_at);
 });
 
 it('can add items to the cart', function () {
