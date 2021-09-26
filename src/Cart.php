@@ -3,7 +3,8 @@
 namespace YiddisheKop\LaravelCommerce;
 
 use Illuminate\Support\Traits\ForwardsCalls;
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order as OrderContract;
+use YiddisheKop\LaravelCommerce\Models\Order as OrderModel;
 use YiddisheKop\LaravelCommerce\Traits\SessionCart;
 
 class Cart
@@ -17,13 +18,13 @@ class Cart
         $this->user = auth()->id();
     }
 
-    public function get(): Order
+    public function get(): OrderContract
     {
         $this->user = auth()->id();
 
         if ($this->user) {
-            if ($cart = Order
-                ::whereStatus(Order::STATUS_CART)
+            if ($cart = config('commerce.models.order', OrderModel::class)
+                ::whereStatus(OrderModel::STATUS_CART)
                 ->where('user_id', $this->user)
                 ->with('items')
                 ->first()
@@ -35,9 +36,9 @@ class Cart
         return $this->getOrMakeSessionCart();
     }
 
-    public function find($id): Order
+    public function find($id): OrderContract
     {
-        $order = Order
+        $order = config('commerce.models.order', OrderModel::class)
             ::isCart()
             ->with('items')
             ->find($id);
@@ -57,7 +58,7 @@ class Cart
 
     public function create($attributes = [])
     {
-        return Order::create($attributes);
+        return config('commerce.models.order', OrderModel::class)::create($attributes);
     }
 
     /**

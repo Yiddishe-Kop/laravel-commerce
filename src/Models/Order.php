@@ -30,13 +30,9 @@ class Order extends Model implements OrderContract
         'gateway_data' => 'array',
     ];
 
-    protected $appends = [
-        'timeAgo',
-    ];
-
     public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, 'order_id');
     }
 
     public function coupon()
@@ -46,13 +42,7 @@ class Order extends Model implements OrderContract
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('user', 'App\\User'));
-    }
-
-    public function getTimeAgoAttribute()
-    {
-        if (!$this->paid_at) return null;
-        return $this->paid_at->diffForHumans();
+        return $this->belongsTo(config('commerce.models.user', 'App\\Models\\User'));
     }
 
     public function scopeIsCart($query)

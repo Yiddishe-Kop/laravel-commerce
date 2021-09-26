@@ -49,8 +49,12 @@ return [
         'calculator' => ExampleOffersCalculator::class,
     ],
 
-    // your user model - replace this with your user model
-    'user' => 'App\\User',
+    'models' => [
+        // the order model - you can replace this with your own Order model that extends this class & implements the Order contract
+        'order' => YiddisheKop\LaravelCommerce\Models\Order::class,
+        // your user model - replace this with your user model
+        'user' => 'App\\Models\\User',
+    ],
 
     /*
   |--------------------------------------------------------------------------

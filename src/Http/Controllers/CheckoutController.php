@@ -3,7 +3,7 @@
 namespace YiddisheKop\LaravelCommerce\Http\Controllers;
 
 use Illuminate\Http\Request;
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class CheckoutController extends Controller
 {

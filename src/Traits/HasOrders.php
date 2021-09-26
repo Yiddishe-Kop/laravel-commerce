@@ -10,11 +10,13 @@ trait HasOrders
 
     public function orders()
     {
-        return $this->hasMany(Order::class)->where('status', Order::STATUS_COMPLETED);
+        return $this->hasMany(config('commerce.models.order', Order::class))
+            ->where('status', Order::STATUS_COMPLETED);
     }
 
     public function orderItems()
     {
-        return $this->hasManyThrough(OrderItem::class, Order::class)->where('orders.status', Order::STATUS_COMPLETED);
+        return $this->hasManyThrough(OrderItem::class, config('commerce.models.order', Order::class))
+            ->where('orders.status', Order::STATUS_COMPLETED);
     }
 }

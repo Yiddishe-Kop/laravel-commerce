@@ -3,8 +3,9 @@
 namespace YiddisheKop\LaravelCommerce\Tests\Fixtures;
 
 use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order as OrderContract;
 
-class MyOrder extends Order
+class MyOrder extends Order implements OrderContract
 {
     protected $table = 'orders';
 

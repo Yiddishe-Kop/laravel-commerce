@@ -4,7 +4,7 @@ namespace YiddisheKop\LaravelCommerce\Traits;
 
 use Illuminate\Support\Facades\Session;
 use YiddisheKop\LaravelCommerce\Facades\Cart;
-use YiddisheKop\LaravelCommerce\Models\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 trait SessionCart
 {

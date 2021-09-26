@@ -1,5 +1,6 @@
 <?php
 
+use YiddisheKop\LaravelCommerce\Facades\Cart;
 use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\MyOrder;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
@@ -21,6 +22,20 @@ beforeEach(function () {
         'email' => 'yehuda@yiddishe-kop.com',
         'password' => '12345678'
     ]);
+});
+
+test('you can set the config to use a custom Order model', function () {
+    config([
+        'commerce.models.order' => Order::class,
+    ]);
+    $order = Cart::get();
+    expect($order)->toBeInstanceOf(Order::class);
+
+    config([
+        'commerce.models.order' => MyOrder::class,
+    ]);
+    $order = Cart::get();
+    expect($order)->toBeInstanceOf(MyOrder::class);
 });
 
 test('you can use a custom Order class by implementing the Order contract', function () {
