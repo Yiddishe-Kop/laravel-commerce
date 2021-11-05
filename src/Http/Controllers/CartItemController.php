@@ -16,11 +16,21 @@ class CartItemController extends Controller
             'product_type' => 'required|string',
             'product_id' => 'required',
             'quantity' => 'nullable|numeric',
-            'options' => 'nullable|array'
+            'options' => 'nullable|array',
+            'multi' => 'nullable|string'
         ]);
 
         $product = $request->product_type::findOrFail($request->product_id);
-        Cart::add($product, $request->quantity ?? 1, $request->options);
+
+        if ($request->quantity > 1 &&  $request->multi) {
+            $multiOptions = $request->options;
+            foreach ($request->options[$request->multi] as  $value) {
+                $multiOptions[$request->multi] = $value;
+                Cart::add($product, 1, $multiOptions);
+            }
+        } else {
+            Cart::add($product, $request->quantity ?? 1, $request->options);
+        }
 
         return back()->with('success', __('Product has been added to your cart.', [
             'productTitle' => $product->getTitle()
