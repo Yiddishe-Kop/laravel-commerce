@@ -23,7 +23,7 @@ class AddProductMorphsToCouponsTable extends Migration
 
     public function up()
     {
-        Schema::create('coupons', function (Blueprint $table) {
+        Schema::table('coupons', function (Blueprint $table) {
             $table->nullableMorphs('product');
         });
     }
