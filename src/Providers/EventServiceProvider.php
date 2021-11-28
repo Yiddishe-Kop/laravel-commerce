@@ -9,7 +9,6 @@ use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
 class EventServiceProvider extends ServiceProvider
 {
 
-
     protected $listen = [
         CouponRedeemed::class => [
             IncrementCouponTimesUsed::class,
