@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 1.0.2 (2021-11-28)
+
+- New Feature: Restrict a coupon to a specific product!
+
+We added the following columns to the `coupons` table: `product_type` & `product_id`.
+
+If you're upgrading an existing installation, create the following migration:
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use YiddisheKop\LaravelCommerce\Models\Coupon;
+
+class AddProductMorphsToCouponsTable extends Migration
+{
+
+    public function up()
+    {
+        Schema::create('coupons', function (Blueprint $table) {
+            $table->nullableMorphs('product');
+        });
+    }
+
+    public function down()
+    {
+        Schema::table('coupons', function (Blueprint $table) {
+            $table->dropMorphs('product');
+        });
+    }
+}
+
+```
+
 ### [1.0.1-alpha.0](https://github.com/Yiddishe-Kop/laravel-commerce/compare/v1.0.0...v1.0.1-alpha.0) (2020-11-30)
 
 ## 1.0.0 (2020-11-30)
