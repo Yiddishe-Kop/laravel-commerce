@@ -100,7 +100,7 @@ trait HandlesCartItems
             $offersCalculator::apply($this);
         }
 
-        return $this->items->sum(fn ($item) => ($item->price - $item->discount) * $item->quantity);
+        return $this->items->sum(fn ($item) => $item->line_total);
     }
 
     private function getShippingTotal()
@@ -113,13 +113,22 @@ trait HandlesCartItems
 
     private function getCouponDiscount($itemsTotal, $shippingTotal)
     {
+        if (!$this->coupon) {
+            return 0;
+        }
+
         $couponDiscount = 0;
         $originalPrice = $itemsTotal;
+
+        if ($this->coupon->isLimitedToProduct()) {
+            $originalPrice = $this->items
+                ->filter(fn ($item) => $item->model_type == $this->coupon->product_type && $item->model_id == $this->coupon->product_id)
+                ->sum(fn ($item) => $item->line_total);
+        }
+
         config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
 
-        if ($this->coupon) {
-            $couponDiscount = $this->coupon->calculateDiscount($originalPrice);
-        }
+        $couponDiscount = $this->coupon->calculateDiscount($originalPrice);
         return $couponDiscount;
     }
 

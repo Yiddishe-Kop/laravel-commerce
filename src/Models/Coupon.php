@@ -3,6 +3,7 @@
 namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use YiddisheKop\LaravelCommerce\Traits\HandlesCoupons;
 
 class Coupon extends Model
@@ -18,4 +19,9 @@ class Coupon extends Model
         'valid_from',
         'valid_to',
     ];
+
+    public function product(): MorphTo
+    {
+        return $this->morphTo();
+    }
 }

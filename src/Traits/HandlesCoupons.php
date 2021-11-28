@@ -6,12 +6,20 @@ use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponLimitReached;
+use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 
 /**
  * Coupon methods
  */
 trait HandlesCoupons
 {
+    /**
+     * Check if the coupon is limited to a specific product
+     */
+    public function isLimitedToProduct(): bool
+    {
+        return !is_null($this->product_type) && !is_null($this->product_id);
+    }
 
     /**
      * Check if the coupon is valid
@@ -45,6 +53,9 @@ trait HandlesCoupons
         }
         if ($this->usageLimitReached()) {
             throw new CouponLimitReached("The coupon has been used to it's max", 1);
+        }
+        if ($this->isLimitedToProduct() && ($order->items()->where('model_type', $this->product_type)->where('model_id', $this->product_id))->count() == 0) {
+            throw new CouponNotFound("Coupon invalid for your products");
         }
         $order->update([
             'coupon_id' => $this->id

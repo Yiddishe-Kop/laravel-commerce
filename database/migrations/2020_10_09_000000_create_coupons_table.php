@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 
 class CreateCouponsTable extends Migration
@@ -23,6 +23,8 @@ class CreateCouponsTable extends Migration
 
             $table->timestamp('valid_from')->nullable();
             $table->timestamp('valid_to')->nullable();
+
+            $table->nullableMorphs('product');
 
             $table->timestamps();
         });

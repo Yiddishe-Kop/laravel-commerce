@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
 {
-
     public $timestamps = false;
 
     protected $guarded = [];
@@ -28,5 +27,10 @@ class OrderItem extends Model
     public function setOptionsAttribute($value)
     {
         $this->attributes['options'] = json_encode($value);
+    }
+
+    public function getLineTotalAttribute()
+    {
+        return ($this->price - $this->discount) * $this->quantity;
     }
 }

@@ -1,13 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Event;
-use YiddisheKop\LaravelCommerce\Cart;
 use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponLimitReached;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 use YiddisheKop\LaravelCommerce\Helpers\Vat;
-use YiddisheKop\LaravelCommerce\Listeners\IncrementCouponTimesUsed;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
