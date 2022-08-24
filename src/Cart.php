@@ -3,13 +3,15 @@
 namespace YiddisheKop\LaravelCommerce;
 
 use Illuminate\Support\Traits\ForwardsCalls;
-use YiddisheKop\LaravelCommerce\Contracts\Order as OrderContract;
-use YiddisheKop\LaravelCommerce\Models\Order as OrderModel;
+use YiddisheKop\LaravelCommerce\Models\OrderItem;
 use YiddisheKop\LaravelCommerce\Traits\SessionCart;
+use YiddisheKop\LaravelCommerce\Models\Order as OrderModel;
+use YiddisheKop\LaravelCommerce\Contracts\Order as OrderContract;
 
 class Cart
 {
-    use SessionCart, ForwardsCalls;
+    use SessionCart;
+    use ForwardsCalls;
 
     protected $user;
 
@@ -23,8 +25,7 @@ class Cart
         $this->user = auth()->id();
 
         if ($this->user) {
-            if ($cart = config('commerce.models.order', OrderModel::class)
-                ::whereStatus(OrderModel::STATUS_CART)
+            if ($cart = config('commerce.models.order', OrderModel::class)::whereStatus(OrderModel::STATUS_CART)
                 ->where('user_id', $this->user)
                 ->with('items')
                 ->first()
@@ -38,8 +39,7 @@ class Cart
 
     public function find($id): OrderContract
     {
-        $order = config('commerce.models.order', OrderModel::class)
-            ::isCart()
+        $order = config('commerce.models.order', OrderModel::class)::isCart()
             ->with('items')
             ->find($id);
 
@@ -59,6 +59,31 @@ class Cart
     public function create($attributes = [])
     {
         return config('commerce.models.order', OrderModel::class)::create($attributes);
+    }
+
+    public function transferGuestCartItemsToUserCart($userId)
+    {
+        $cartId = session()->get('cart');
+        $guestCart = OrderModel::isCart()
+            ->withCount('items')
+            ->with('items.model')
+            ->find($cartId);
+        $userOldCart = OrderModel::where('user_id', $userId)
+            ->isCart()
+            ->withCount('items')
+            ->first();
+        if ($guestCart && $guestCart->items_count) {
+            if ($userOldCart) {
+                $guestCart->items->each(function (OrderItem $item) use ($userOldCart) {
+                    $userOldCart->add($item->model, $item->quantity, $item->options);
+                });
+                $guestCart->delete(); // triggers orderItems deletion
+            } else {
+                $guestCart->update([
+                    'user_id' => $userId,
+                ]);
+            }
+        }
     }
 
     /**
