@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 interface Gateway
 {
-
     /**
      *  The name of the payment gateway
      */

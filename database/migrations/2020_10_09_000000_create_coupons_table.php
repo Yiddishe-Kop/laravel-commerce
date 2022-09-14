@@ -7,11 +7,9 @@ use YiddisheKop\LaravelCommerce\Models\Coupon;
 
 class CreateCouponsTable extends Migration
 {
-
     public function up()
     {
         Schema::create('coupons', function (Blueprint $table) {
-
             $table->id();
             $table->string('name')->default('Coupon');
             $table->string('code')->unique();

@@ -20,17 +20,15 @@ class CommerceServiceProvider extends ServiceProvider
 
     protected function bootVendorAssets()
     {
-
         if ($this->app->runningInConsole()) {
-
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
             $this->publishes([
-                __DIR__ . '/../database/migrations' => $this->app->databasePath('migrations'),
+                __DIR__.'/../database/migrations' => $this->app->databasePath('migrations'),
             ], 'migrations');
 
             $this->publishes([
-                __DIR__ . '/../config/commerce.php' => $this->app->configPath('commerce.php'),
+                __DIR__.'/../config/commerce.php' => $this->app->configPath('commerce.php'),
             ], 'config');
 
             // Registering package commands.
@@ -41,21 +39,21 @@ class CommerceServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
     }
 
     protected function routeConfiguration()
     {
         return [
-            'prefix' => config('commerce.prefix'),
+            'prefix'     => config('commerce.prefix'),
             'middleware' => config('commerce.middleware'),
         ];
     }
 
     public $bindings = [
         'gateway' => Gateway::class,
-        'cart' => Cart::class,
+        'cart'    => Cart::class,
     ];
 
     /**
@@ -64,7 +62,7 @@ class CommerceServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/commerce.php', 'commerce');
+        $this->mergeConfigFrom(__DIR__.'/../config/commerce.php', 'commerce');
 
         $this->app->register(EventServiceProvider::class);
 

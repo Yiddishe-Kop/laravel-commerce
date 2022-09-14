@@ -13,11 +13,11 @@ class MyOrder extends Order implements OrderContract
     {
         // Overriden method: calculateTotals - everthing is free!
         $this->update([
-            'items_total' => 0,
-            'coupon_total' => 0,
-            'tax_total' => 0,
+            'items_total'    => 0,
+            'coupon_total'   => 0,
+            'tax_total'      => 0,
             'shipping_total' => 0,
-            'grand_total' => 0,
+            'grand_total'    => 0,
         ]);
 
         return $this;

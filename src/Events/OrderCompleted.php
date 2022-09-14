@@ -2,14 +2,16 @@
 
 namespace  YiddisheKop\LaravelCommerce\Events;
 
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Foundation\Events\Dispatchable;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
+use Illuminate\Broadcasting\InteractsWithSockets;
 
 class OrderCompleted
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $order;
 

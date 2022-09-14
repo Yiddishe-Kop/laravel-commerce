@@ -1,28 +1,28 @@
 <?php
 
-use Orchestra\Testbench\Factories\UserFactory;
 use YiddisheKop\LaravelCommerce\Cart;
+use Orchestra\Testbench\Factories\UserFactory;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
 beforeEach(function () {
     $this->user = UserFactory::new()->create([
-        'name' => 'Yehuda',
+        'name'  => 'Yehuda',
         'email' => 'yehuda@yiddishe-kop.com',
     ]);
 
     $this->anotherUser = UserFactory::new()->create([
-        'name' => 'Aryeh',
+        'name'  => 'Aryeh',
         'email' => 'aryeh@yiddishe-kop.com',
     ]);
 
     $this->anotherProduct = Product::create([
         'title' => 'BA Hayetzirah',
-        'price' => 222
+        'price' => 222,
     ]);
 
     $this->aThirdProduct = Product::create([
         'title' => 'Third Product',
-        'price' => 333
+        'price' => 333,
     ]);
 });
 
@@ -31,8 +31,8 @@ test('a user can add items to his cart', function () {
         ->actingAs($this->user)
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->product->id,
-            'quantity' => 2,
+            'product_id'   => $this->product->id,
+            'quantity'     => 2,
         ]);
 
     $cart = (new Cart)->get();
@@ -54,8 +54,8 @@ test('a guest can add items to the cart', function () {
     $response = $this
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->product->id,
-            'quantity' => 3,
+            'product_id'   => $this->product->id,
+            'quantity'     => 3,
         ]);
 
     $cart = (new Cart)->get();
@@ -77,8 +77,8 @@ test('guest cart gets attached to user when he logs in', function () {
     $response = $this
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->product->id,
-            'quantity' => 3,
+            'product_id'   => $this->product->id,
+            'quantity'     => 3,
         ]);
     $cart = (new Cart)->get();
     expect($cart->user_id)->toEqual(null);
@@ -87,8 +87,8 @@ test('guest cart gets attached to user when he logs in', function () {
         ->actingAs($this->user)
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->anotherProduct->id,
-            'quantity' => 1,
+            'product_id'   => $this->anotherProduct->id,
+            'quantity'     => 1,
         ]);
     $cart = (new Cart)->get();
     expect($cart->user_id)->toEqual($this->user->id);
@@ -98,8 +98,8 @@ test('user still gets his cart after logging out', function () {
     $this
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->product->id,
-            'quantity' => 3,
+            'product_id'   => $this->product->id,
+            'quantity'     => 3,
         ]);
     $cart = (new Cart)->get();
     expect($cart->user_id)->toEqual(null);
@@ -109,8 +109,8 @@ test('user still gets his cart after logging out', function () {
         ->actingAs($this->user)
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->anotherProduct->id,
-            'quantity' => 1,
+            'product_id'   => $this->anotherProduct->id,
+            'quantity'     => 1,
         ]);
     $cart = (new Cart)->get();
     expect($cart->user_id)->toEqual($this->user->id);
@@ -119,8 +119,8 @@ test('user still gets his cart after logging out', function () {
     $this
         ->post(route('cart.add'), [
             'product_type' => Product::class,
-            'product_id' => $this->aThirdProduct->id,
-            'quantity' => 7,
+            'product_id'   => $this->aThirdProduct->id,
+            'quantity'     => 7,
         ]);
     $cart = (new Cart)->get();
     expect($cart->user_id)->toEqual($this->user->id);

@@ -3,8 +3,8 @@
 namespace YiddisheKop\LaravelCommerce\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
-use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 use YiddisheKop\LaravelCommerce\Traits\Purchasable;
+use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 
 class Package extends Model implements PurchasableContract
 {

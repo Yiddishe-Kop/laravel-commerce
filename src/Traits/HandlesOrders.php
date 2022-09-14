@@ -2,11 +2,11 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use YiddisheKop\LaravelCommerce\Models\Order;
 use YiddisheKop\LaravelCommerce\Events\CouponRedeemed;
 use YiddisheKop\LaravelCommerce\Events\OrderCompleted;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 use YiddisheKop\LaravelCommerce\Exceptions\OrderNotAssignedToUser;
-use YiddisheKop\LaravelCommerce\Models\Order;
 
 trait HandlesOrders
 {
@@ -17,7 +17,7 @@ trait HandlesOrders
         }
 
         $this->update([
-            'currency' => $currency
+            'currency' => $currency,
         ]);
 
         $this->calculateTotals();
@@ -27,13 +27,13 @@ trait HandlesOrders
 
     public function markAsCompleted(): self
     {
-        if (!$this->user_id) {
-            throw new OrderNotAssignedToUser("No user assigned to order", 1);
+        if (! $this->user_id) {
+            throw new OrderNotAssignedToUser('No user assigned to order', 1);
         }
 
         $this->update([
             'paid_at' => now(),
-            'status' => Order::STATUS_COMPLETED,
+            'status'  => Order::STATUS_COMPLETED,
         ]);
 
         if ($this->coupon && $this->coupon_total) {

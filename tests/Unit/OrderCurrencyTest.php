@@ -1,30 +1,28 @@
 <?php
 
-use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
-use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\User;
+use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
+use YiddisheKop\LaravelCommerce\Exceptions\OrderAlreadyComplete;
 
 beforeEach(function () {
     $this->cart
         ->add(Product::create([
             'title' => 'BA Ziporen',
-            'price' => 200
+            'price' => 200,
         ]), 2);
     $this->user = User::create([
-        'name' => 'Yehuda',
-        'email' => 'yehuda@yiddishe-kop.com',
-        'password' => '12345678'
+        'name'     => 'Yehuda',
+        'email'    => 'yehuda@yiddishe-kop.com',
+        'password' => '12345678',
     ]);
 
     config([
         'commerce.shipping.calculator' => null,
-        'commerce.offers.calculator' => null,
+        'commerce.offers.calculator'   => null,
     ]);
 });
 
-
 it('can set the order currency', function () {
-
     expect($this->cart->currency)->toBe('USD');
 
     $this->cart->setCurrency('GBP');
@@ -33,7 +31,6 @@ it('can set the order currency', function () {
 });
 
 it('can recalculate the totals for new currency', function () {
-
     $this->cart->calculateTotals();
 
     expect($this->cart->currency)->toBe('USD');
@@ -46,9 +43,8 @@ it('can recalculate the totals for new currency', function () {
 });
 
 it('it throws an exception when changing the currency of a completed order', function () {
-
     $this->cart->update([
-        'user_id' => $this->user->id
+        'user_id' => $this->user->id,
     ]);
     $this->cart->calculateTotals();
     $this->cart->markAsCompleted();

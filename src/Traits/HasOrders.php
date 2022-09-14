@@ -7,7 +7,6 @@ use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 trait HasOrders
 {
-
     public function orders()
     {
         return $this->hasMany(config('commerce.models.order', Order::class))

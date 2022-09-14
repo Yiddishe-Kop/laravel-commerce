@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 class Gateway
 {
-
     protected static $gateways = [];
 
     public static function bootGateways()
@@ -23,6 +22,7 @@ class Gateway
                 ];
             }
         }
+
         return new static();
     }
 

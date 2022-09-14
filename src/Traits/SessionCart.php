@@ -8,7 +8,6 @@ use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 trait SessionCart
 {
-
     protected function getSessionCartKey(): string
     {
         return Session::get('cart');
@@ -16,11 +15,10 @@ trait SessionCart
 
     protected function getSessionCart()
     {
-
         $cart = Cart::find($this->getSessionCartKey());
 
         // attach to user if logged in
-        if ($this->user && !$cart->user_id) {
+        if ($this->user && ! $cart->user_id) {
             $cart->update([
                 'user_id' => $this->user,
             ]);
@@ -36,9 +34,8 @@ trait SessionCart
 
     protected function makeSessionCart(): Order
     {
-
         $cart = Cart::create([
-            'user_id' => $this->user,
+            'user_id'  => $this->user,
             'currency' => config('commerce.currency'),
         ]);
 
@@ -64,6 +61,7 @@ trait SessionCart
     protected function refreshSessionCart(): Order
     {
         $this->forgetSessionCart();
+
         return $this->makeSessionCart();
     }
 }

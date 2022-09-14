@@ -10,8 +10,8 @@ class Coupon extends Model
 {
     use HandlesCoupons;
 
-    const TYPE_PERCENTAGE = 'percentage';
-    const TYPE_FIXED = 'fixed';
+    public const TYPE_PERCENTAGE = 'percentage';
+    public const TYPE_FIXED = 'fixed';
 
     protected $guarded = [];
 

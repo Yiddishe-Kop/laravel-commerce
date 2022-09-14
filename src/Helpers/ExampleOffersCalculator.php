@@ -9,7 +9,9 @@ class ExampleOffersCalculator
     public static function apply(Order $order)
     {
         $orderItem = $order->items->first();
-        if (!$orderItem) return;
+        if (! $orderItem) {
+            return;
+        }
         $orderItem->discount = $orderItem->price / 2; // 50% discount [* qty]
         $orderItem->save();
     }

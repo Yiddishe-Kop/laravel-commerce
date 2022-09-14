@@ -6,7 +6,6 @@ use YiddisheKop\LaravelCommerce\Facades\Cart;
 
 trait Purchasable
 {
-
     public function addToCart(int $quantity = 1, $options = null)
     {
         Cart::add($this, $quantity, $options);

@@ -2,19 +2,18 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
-use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
-use YiddisheKop\LaravelCommerce\Events\AddedToCart;
-use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 use YiddisheKop\LaravelCommerce\Helpers\Vat;
-use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\Offer;
+use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
+use YiddisheKop\LaravelCommerce\Events\AddedToCart;
+use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
+use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 
 trait HandlesCartItems
 {
     public function add(Purchasable $product, int $quantity = 1, array $options = null): self
     {
-
         $existingItem = $this->items()
             ->where('model_id', $product->id)
             ->where('model_type', get_class($product))
@@ -28,7 +27,7 @@ trait HandlesCartItems
             // update options
             if ($options) {
                 $existingItem->update([
-                    'options' => $options
+                    'options' => $options,
                 ]);
             }
 
@@ -36,12 +35,12 @@ trait HandlesCartItems
         }
 
         $this->items()->create([
-            'model_id' => $product->id,
+            'model_id'   => $product->id,
             'model_type' => get_class($product),
-            'title' => $product->getTitle(),
-            'price' => $product->getPrice($this->currency, $options),
-            'quantity' => $quantity,
-            'options' => $options,
+            'title'      => $product->getTitle(),
+            'price'      => $product->getPrice($this->currency, $options),
+            'quantity'   => $quantity,
+            'options'    => $options,
         ]);
 
         event(new AddedToCart($this, $product));
@@ -70,6 +69,7 @@ trait HandlesCartItems
         OrderItem::where('model_id', $product->id)
             ->where('model_type', get_class($product))
             ->delete();
+
         return $this;
     }
 
@@ -82,15 +82,14 @@ trait HandlesCartItems
     {
         if ($coupon = Coupon::where('code', $code)->first()) {
             return $coupon->apply($this);
-        } else {
-            throw new CouponNotFound("Invalid coupon code", 1);
         }
+        throw new CouponNotFound('Invalid coupon code', 1);
     }
 
     public function removeCoupon()
     {
         $this->update([
-            'coupon_id' => null
+            'coupon_id' => null,
         ]);
     }
 
@@ -106,14 +105,15 @@ trait HandlesCartItems
     private function getShippingTotal()
     {
         if ($shippingCalculator = config('commerce.shipping.calculator')) {
-            return (new $shippingCalculator)->calculate($this);
+            return (new $shippingCalculator())->calculate($this);
         }
+
         return config('commerce.shipping.cost') * 100;
     }
 
     private function getCouponDiscount($itemsTotal, $shippingTotal)
     {
-        if (!$this->coupon) {
+        if (! $this->coupon) {
             return 0;
         }
 
@@ -129,12 +129,12 @@ trait HandlesCartItems
         config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
 
         $couponDiscount = $this->coupon->calculateDiscount($originalPrice);
+
         return $couponDiscount;
     }
 
     public function calculateTotals(): self
     {
-
         $this->refreshItems();
 
         $itemsTotal = $this->getItemsTotal();
@@ -154,12 +154,13 @@ trait HandlesCartItems
         $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
 
         $this->update([
-            'items_total' => max(0, $itemsTotal),
-            'coupon_total' => max(0, $couponDiscount),
-            'tax_total' => max(0, $taxTotal),
+            'items_total'    => max(0, $itemsTotal),
+            'coupon_total'   => max(0, $couponDiscount),
+            'tax_total'      => max(0, $taxTotal),
             'shipping_total' => max(0, $shippingTotal),
-            'grand_total' => max(0, $grandTotal),
+            'grand_total'    => max(0, $grandTotal),
         ]);
+
         return $this;
     }
 
@@ -175,6 +176,7 @@ trait HandlesCartItems
         } else {
             $taxTotal = round($taxableAmount * config('commerce.tax.rate')); // add vat
         }
+
         return $taxTotal;
     }
 
@@ -187,7 +189,6 @@ trait HandlesCartItems
      */
     protected function refreshItems()
     {
-
         $cartItems = $this->items()
             ->with('model')
             ->get();
@@ -195,15 +196,15 @@ trait HandlesCartItems
         $offer = Offer::getFor($this);
 
         $cartItems->each(function (OrderItem $item) use ($offer) {
-            if (!$item->model) { // product has been deleted
+            if (! $item->model) { // product has been deleted
                 return $item->delete(); // also remove from cart
             }
             if ($offer && $offer->isValidFor($item)) {
                 $offer->apply($item);
             } else {
                 $item->update([
-                    'title' => $item->model->getTitle(),
-                    'price' => $item->model->getPrice($this->currency, $item->options),
+                    'title'    => $item->model->getTitle(),
+                    'price'    => $item->model->getPrice($this->currency, $item->options),
                     'discount' => 0,
                 ]);
             }

@@ -7,22 +7,20 @@ beforeEach(function () {
     $this->cart
         ->add(Product::create([
             'title' => 'BA Ziporen',
-            'price' => 333
+            'price' => 333,
         ]), 2)
         ->add(Product::create([
             'title' => 'BA Vilna',
-            'price' => 444
+            'price' => 444,
         ]), 5);
 
     config([
         'commerce.shipping.calculator' => null,
-        'commerce.offers.calculator' => null,
+        'commerce.offers.calculator'   => null,
     ]);
 });
 
-
 it('calculates the totals', function () {
-
     $this->cart->calculateTotals();
 
     $expectedItemsTotal = ((333 * 2) + (444 * 5)) * 100;
@@ -46,12 +44,11 @@ it('calculates the totals', function () {
 });
 
 test('if the price has changed, the cart will update the price upon calculating the totals', function () {
-
     $this->cart->empty();
 
     $product = Product::create([
         'title' => 'My awesome product',
-        'price' => 111
+        'price' => 111,
     ]);
 
     $this->cart->add($product);
@@ -59,7 +56,7 @@ test('if the price has changed, the cart will update the price upon calculating 
     expect($this->cart->items_total)->toEqual(111 * 100);
 
     $product->update([
-        'price' => 222
+        'price' => 222,
     ]);
     $cart = $this->cart->calculateTotals();
     expect($cart->items_total)->toEqual(222 * 100);

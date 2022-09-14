@@ -7,9 +7,8 @@ use YiddisheKop\LaravelCommerce\Contracts\Order;
 
 class Offer extends Model
 {
-
-    const TYPE_PERCENTAGE = 'percentage';
-    const TYPE_FIXED = 'fixed';
+    public const TYPE_PERCENTAGE = 'percentage';
+    public const TYPE_FIXED = 'fixed';
 
     protected $guarded = [];
 
@@ -43,15 +42,16 @@ class Offer extends Model
 
         $validOffers = collect();
 
-        $offers = Offer::valid()
+        $offers = self::valid()
             ->orderBy('min', 'desc')
             ->get();
 
         $offers->each(function ($offer) use ($validOffers, $productTypeCounts) {
-            if (!$offer->product_type) { // offer is valid for all product types
+            if (! $offer->product_type) { // offer is valid for all product types
                 $validOffers->push($offer);
+
                 return;
-            } else if ($productTypeCounts->has($offer->product_type)) { // the required product type is in the cart
+            } elseif ($productTypeCounts->has($offer->product_type)) { // the required product type is in the cart
                 $amountInCart = $productTypeCounts[$offer->product_type];
                 if ($amountInCart >= $offer->min) { // right amount in cart
                     $validOffers->push($offer);
@@ -66,7 +66,10 @@ class Offer extends Model
 
     public function isValidFor(OrderItem $item)
     {
-        if (!$this->product_type) return true;
+        if (! $this->product_type) {
+            return true;
+        }
+
         return $this->product_type == $item->model_type;
     }
 
@@ -75,7 +78,6 @@ class Offer extends Model
      */
     public function apply(OrderItem $item)
     {
-
         $product = $item->model;
         $order = $item->order;
 
@@ -84,13 +86,13 @@ class Offer extends Model
         $discount = 0;
         if ($this->type == self::TYPE_FIXED) {
             $discount = $this->discount;
-        } else if ($this->type == self::TYPE_PERCENTAGE) {
+        } elseif ($this->type == self::TYPE_PERCENTAGE) {
             $discount = ($originalPrice / 100) * $this->discount;
         }
         $item->update([
-            'title' => $product->getTitle(),
-            'price' => $originalPrice,
-            'discount' => $discount
+            'title'    => $product->getTitle(),
+            'price'    => $originalPrice,
+            'discount' => $discount,
         ]);
     }
 }

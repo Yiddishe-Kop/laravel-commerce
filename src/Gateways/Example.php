@@ -3,12 +3,11 @@
 namespace YiddisheKop\LaravelCommerce\Gateways;
 
 use Illuminate\Http\Request;
-use YiddisheKop\LaravelCommerce\Contracts\Gateway;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
+use YiddisheKop\LaravelCommerce\Contracts\Gateway;
 
 class Example implements Gateway
 {
-
     public static function name(): string
     {
         return 'Credit Card (demo)';

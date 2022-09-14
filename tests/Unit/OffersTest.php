@@ -8,28 +8,27 @@ beforeEach(function () {
     $this->cart
         ->add(Product::create([
             'title' => 'Mercedes S300',
-            'price' => 3000
+            'price' => 3000,
         ]))
         ->add(Product::create([
             'title' => 'Audi A8',
-            'price' => 2000
+            'price' => 2000,
         ]))
         ->add(Package::create([
             'title' => 'Hotel Weekend Package',
-            'price' => 4000
+            'price' => 4000,
         ]));
 
     config([
         'commerce.shipping.calculator' => null,
-        'commerce.offers.calculator' => null,
+        'commerce.offers.calculator'   => null,
     ]);
 });
 
 test('Offers get applied to cart total', function () {
-
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
-        'discount' => 10,
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 10,
         'product_type' => Product::class,
     ]);
 
@@ -39,10 +38,9 @@ test('Offers get applied to cart total', function () {
 });
 
 test('Offers only get applied to specified product type', function () {
-
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
-        'discount' => 50,
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 50,
         'product_type' => Package::class,
     ]);
 
@@ -52,7 +50,6 @@ test('Offers only get applied to specified product type', function () {
 });
 
 test('The right Offer with highest min gets applied', function () {
-
     $this->cart->empty();
 
     $this->cart
@@ -62,16 +59,16 @@ test('The right Offer with highest min gets applied', function () {
         ]), 6);
 
     Offer::create([
-        'type' => Offer::TYPE_FIXED,
+        'type'     => Offer::TYPE_FIXED,
         'discount' => 100,
-        'min' => 3,
+        'min'      => 3,
     ]);
 
     // This offer should get applied, as min is higher, and 6 in cart.
     Offer::create([
-        'type' => Offer::TYPE_FIXED,
+        'type'     => Offer::TYPE_FIXED,
         'discount' => 200,
-        'min' => 6,
+        'min'      => 6,
     ]);
 
     $this->cart->calculateTotals();
@@ -80,15 +77,14 @@ test('The right Offer with highest min gets applied', function () {
 });
 
 test('Expired offers are not applied', function () {
-
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
-        'discount' => 50,
+        'type'       => Offer::TYPE_PERCENTAGE,
+        'discount'   => 50,
         'valid_from' => now()->addMinute(),
     ]);
 
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
+        'type'     => Offer::TYPE_PERCENTAGE,
         'discount' => 50,
         'valid_to' => now()->subMinute(),
     ]);
@@ -98,10 +94,10 @@ test('Expired offers are not applied', function () {
     expect($this->cart->items_total)->toEqual(9000 * 100);
 
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
-        'discount' => 50,
+        'type'       => Offer::TYPE_PERCENTAGE,
+        'discount'   => 50,
         'valid_from' => now()->subMinute(),
-        'valid_to' => now()->addMinute(),
+        'valid_to'   => now()->addMinute(),
     ]);
 
     $this->cart->calculateTotals();
@@ -110,11 +106,10 @@ test('Expired offers are not applied', function () {
 });
 
 test('Offer doesn\'t get applied if minimum is not met', function () {
-
     Offer::create([
-        'type' => Offer::TYPE_PERCENTAGE,
-        'discount' => 20,
-        'min' => 3,
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 20,
+        'min'          => 3,
         'product_type' => Product::class,
     ]);
 

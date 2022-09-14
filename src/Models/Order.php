@@ -4,26 +4,26 @@ namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use YiddisheKop\LaravelCommerce\Traits\HandlesOrders;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use YiddisheKop\LaravelCommerce\Traits\HandlesOrders;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use YiddisheKop\LaravelCommerce\Traits\HandlesCartItems;
 use YiddisheKop\LaravelCommerce\Contracts\Order as OrderContract;
 
 class Order extends Model implements OrderContract
 {
-    use HasFactory,
-        HandlesCartItems,
-        HandlesOrders;
+    use HasFactory;
+    use HandlesCartItems;
+    use HandlesOrders;
 
-    const STATUS_CART = 'cart';
-    const STATUS_PENDING = 'pending';
-    const STATUS_COMPLETED = 'completed';
+    public const STATUS_CART = 'cart';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_COMPLETED = 'completed';
 
     protected $guarded = [];
 
     protected $dates = [
-        'paid_at'
+        'paid_at',
     ];
 
     protected $casts = [

@@ -43,11 +43,11 @@ class Cart
             ->with('items')
             ->find($id);
 
-        if (!$order) {
+        if (! $order) {
             return $this->refreshSessionCart();
         }
 
-        if ($this->user && !$order->user_id) {
+        if ($this->user && ! $order->user_id) {
             $order->update([
                 'user_id' => $this->user,
             ]);

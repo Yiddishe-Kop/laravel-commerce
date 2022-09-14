@@ -3,8 +3,8 @@
 namespace YiddisheKop\LaravelCommerce\Tests\Fixtures;
 
 use Illuminate\Database\Eloquent\Model;
-use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 use YiddisheKop\LaravelCommerce\Traits\Purchasable;
+use YiddisheKop\LaravelCommerce\Contracts\Purchasable as PurchasableContract;
 
 class Product extends Model implements PurchasableContract
 {
@@ -24,9 +24,9 @@ class Product extends Model implements PurchasableContract
 
         if ($options) {
             $price += [
-                'small' => 10,
+                'small'  => 10,
                 'medium' => 20,
-                'large' => 30,
+                'large'  => 30,
             ][$options['size']];
         }
 
