@@ -54,3 +54,16 @@ it('throws an exception if coupon not valid for any items in order', function ()
     $this->expectException(CouponNotFound::class);
     $this->cart->applyCoupon($this->coupon->code);
 });
+
+it('removes coupon if valid product removed from order', function () {
+    $this->cart->applyCoupon($this->coupon->code);
+    $this->cart->calculateTotals();
+
+    expect($this->cart->coupon_id)->toBe($this->coupon->id);
+
+    $this->cart->remove($this->macbookAir);
+    $this->cart->calculateTotals();
+
+    expect($this->cart->coupon_id)->toBeNull();
+    expect($this->cart->coupon_total)->toEqual(0);
+});

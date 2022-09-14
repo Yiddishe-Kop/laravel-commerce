@@ -45,7 +45,7 @@ test('Can apply FIXED coupon to order', function () {
     $this->cart->applyCoupon($coupon->code);
     $this->cart->calculateTotals();
 
-    expect($this->cart->coupon->id)->toBe($coupon->id);
+    expect($this->cart->coupon_id)->toBe($coupon->id);
     expect($this->cart->coupon_total)->toEqual($coupon->discount);
     // shipping: 1200
     // tax: 60000

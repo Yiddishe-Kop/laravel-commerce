@@ -58,7 +58,7 @@ trait HandlesCoupons
         if ($this->usageLimitReached()) {
             throw new CouponLimitReached("The coupon has been used to it's max", 1);
         }
-        if ($this->isLimitedToProduct() && ($order->items()->where('model_type', $this->product_type)->where('model_id', $this->product_id))->count() == 0) {
+        if (! $this->isValidForOrder($order)) {
             throw new CouponNotFound('Coupon invalid for your products');
         }
         $order->update([
@@ -66,6 +66,18 @@ trait HandlesCoupons
         ]);
 
         return true;
+    }
+
+    public function isValidForOrder(Order $order): bool
+    {
+        if (! $this->isLimitedToProduct()) {
+            return true;
+        }
+
+        return $order->items()
+            ->where('model_type', $this->product_type)
+            ->where('model_id', $this->product_id)
+            ->exists();
     }
 
     /**

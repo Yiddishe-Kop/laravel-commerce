@@ -182,6 +182,7 @@ trait HandlesCartItems
 
     /**
      *  Refresh price data from Purchasable model
+     *  Refresh coupon validity
      *  Apply Offer
      *  Remove deleted products from the cart
      *
@@ -192,6 +193,11 @@ trait HandlesCartItems
         $cartItems = $this->items()
             ->with('model')
             ->get();
+
+        if ($this->coupon && ! $this->coupon->isValidForOrder($this)) {
+            $this->coupon_id = null;
+            $this->save();
+        }
 
         $offer = Offer::getFor($this);
 
