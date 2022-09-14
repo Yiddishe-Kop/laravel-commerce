@@ -154,11 +154,11 @@ trait HandlesCartItems
         $grandTotal = ($itemsTotal + $taxTotal + $shippingTotal) - $couponDiscount;
 
         $this->update([
-            'items_total' => $itemsTotal,
-            'coupon_total' => $couponDiscount,
-            'tax_total' => $taxTotal,
-            'shipping_total' => $shippingTotal,
-            'grand_total' => $grandTotal,
+            'items_total' => max(0, $itemsTotal),
+            'coupon_total' => max(0, $couponDiscount),
+            'tax_total' => max(0, $taxTotal),
+            'shipping_total' => max(0, $shippingTotal),
+            'grand_total' => max(0, $grandTotal),
         ]);
         return $this;
     }
