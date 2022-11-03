@@ -17,7 +17,7 @@ trait HandlesCartItems
         $existingItem = $this->items()
             ->where('model_id', $product->id)
             ->where('model_type', get_class($product))
-            ->where('options', json_encode($options))
+            ->where('options', is_null($options) ? null : json_encode($options))
             ->first();
 
         // if item is already in cart - just increment its quantity
