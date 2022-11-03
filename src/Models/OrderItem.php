@@ -24,11 +24,6 @@ class OrderItem extends Model
         return $this->morphTo();
     }
 
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
-
     public function getLineTotalAttribute()
     {
         return ($this->price - $this->discount) * $this->quantity;
