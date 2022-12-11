@@ -99,7 +99,7 @@ trait HandlesCartItems
             $offersCalculator::apply($this);
         }
 
-        return $this->items->sum(fn ($item) => $item->line_total);
+        return $this->items->fresh()->sum(fn ($item) => $item->line_total);
     }
 
     private function getShippingTotal()
