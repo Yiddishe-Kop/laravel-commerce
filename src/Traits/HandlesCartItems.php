@@ -97,6 +97,7 @@ trait HandlesCartItems
     {
         if ($offersCalculator = config('commerce.offers.calculator')) {
             $offersCalculator::apply($this);
+            $this->refresh();
         }
 
         return $this->items->fresh()->sum(fn ($item) => $item->line_total);
