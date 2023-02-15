@@ -12,9 +12,9 @@ class Offer extends Model
 
     protected $guarded = [];
 
-    protected $dates = [
-        'valid_from',
-        'valid_to',
+    protected $casts = [
+        'valid_from' => 'datetime',
+        'valid_to'   => 'datetime',
     ];
 
     // scopes

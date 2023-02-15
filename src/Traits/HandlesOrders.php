@@ -25,6 +25,9 @@ trait HandlesOrders
         return $this;
     }
 
+    /**
+     *  Mark the order as paid
+     */
     public function markAsCompleted(): self
     {
         if (! $this->user_id) {

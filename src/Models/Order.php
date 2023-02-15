@@ -22,11 +22,8 @@ class Order extends Model implements OrderContract
 
     protected $guarded = [];
 
-    protected $dates = [
-        'paid_at',
-    ];
-
     protected $casts = [
+        'paid_at'      => 'datetime',
         'gateway_data' => 'array',
     ];
 
