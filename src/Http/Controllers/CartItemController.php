@@ -5,6 +5,7 @@ namespace YiddisheKop\LaravelCommerce\Http\Controllers;
 use Illuminate\Http\Request;
 use YiddisheKop\LaravelCommerce\Facades\Cart;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
+use YiddisheKop\LaravelCommerce\Events\RemovedFromCart;
 
 class CartItemController extends Controller
 {
@@ -28,6 +29,8 @@ class CartItemController extends Controller
     public function destroy(OrderItem $item)
     {
         $item->delete();
+
+        event(new RemovedFromCart($item));
 
         return back()->with('success', __('Product has been removed from your cart.', [
             'productTitle' => $item->title,
