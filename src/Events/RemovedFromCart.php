@@ -11,10 +11,8 @@ class RemovedFromCart
     use Dispatchable;
     use SerializesModels;
 
-    public OrderItem $orderItem;
-
-    public function __construct(OrderItem $orderItem)
-    {
-        $this->orderItem = $orderItem;
+    public function __construct(
+        public OrderItem $orderItem,
+    ) {
     }
 }

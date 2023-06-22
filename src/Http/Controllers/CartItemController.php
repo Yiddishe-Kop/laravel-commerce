@@ -30,8 +30,6 @@ class CartItemController extends Controller
     {
         $item->delete();
 
-        event(new RemovedFromCart($item));
-
         return back()->with('success', __('Product has been removed from your cart.', [
             'productTitle' => $item->title,
         ]));
