@@ -7,6 +7,7 @@ use YiddisheKop\LaravelCommerce\Models\Offer;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
 use YiddisheKop\LaravelCommerce\Events\AddedToCart;
+use YiddisheKop\LaravelCommerce\Events\CartEmptied;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponNotFound;
 
@@ -76,6 +77,8 @@ trait HandlesCartItems
     public function empty()
     {
         $this->items()->delete();
+
+        event(new CartEmptied($this));
     }
 
     public function applyCoupon(string $code)
