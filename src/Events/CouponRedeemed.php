@@ -13,10 +13,7 @@ class CouponRedeemed
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $coupon;
-
-    public function __construct(Coupon $coupon)
+    public function __construct(public Coupon $coupon)
     {
-        $this->coupon = $coupon;
     }
 }

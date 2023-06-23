@@ -29,7 +29,7 @@ class Order extends Model implements OrderContract
 
     public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class, 'order_id');
+        return $this->hasMany(config('commerce.models.orderItem', OrderItem::class), 'order_id');
     }
 
     public function coupon()

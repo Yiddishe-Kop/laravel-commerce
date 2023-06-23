@@ -23,7 +23,7 @@ class OrderItem extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(config('commerce.models.order', Order::class));
     }
 
     public function model()

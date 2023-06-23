@@ -13,10 +13,7 @@ class OrderCompleted
     use InteractsWithSockets;
     use SerializesModels;
 
-    public $order;
-
-    public function __construct(Order $order)
+    public function __construct(public Order $order)
     {
-        $this->order = $order;
     }
 }

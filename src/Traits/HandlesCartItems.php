@@ -67,7 +67,7 @@ trait HandlesCartItems
 
     public function remove(Purchasable $product): self
     {
-        OrderItem::where('model_id', $product->id)
+        config('commerce.models.orderItem', OrderItem::class)::where('model_id', $product->id)
             ->where('model_type', get_class($product))
             ->delete();
 

@@ -17,7 +17,7 @@ return [
 
     // Coupon settings
     'coupon' => [
-        'include_tax' => true, // if to apply the coupon after taxes
+        'include_tax'      => true, // if to apply the coupon after taxes
         'include_shipping' => true, // if to apply the coupon after shipping
     ],
 
@@ -32,7 +32,7 @@ return [
     */
     'shipping' => [
         'calculator' => ExampleShippingCalculator::class,
-        'cost' => 12, // if calculator is null, this will be used
+        'cost'       => 12, // if calculator is null, this will be used
     ],
 
     /*
@@ -51,7 +51,8 @@ return [
 
     'models' => [
         // the order model - you can replace this with your own Order model that extends this class & implements the Order contract
-        'order' => YiddisheKop\LaravelCommerce\Models\Order::class,
+        'order'     => YiddisheKop\LaravelCommerce\Models\Order::class,
+        'orderItem' => YiddisheKop\LaravelCommerce\Models\OrderItem::class,
         // your user model - replace this with your user model
         'user' => 'App\\Models\\User',
     ],
@@ -68,7 +69,7 @@ return [
         Example::class => [], // demo gateway
     ],
 
-    'prefix' => 'commerce', // routes prefix
+    'prefix'     => 'commerce', // routes prefix
     'middleware' => ['web'], // you probably want to include 'web' here
 
 ];

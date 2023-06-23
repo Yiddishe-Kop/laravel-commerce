@@ -12,7 +12,7 @@ class WebhookController extends Controller
         Log::info('Payment webhook recieved:');
         Log::info($request->input());
 
-        $gatewayClass = 'App\\Gateways\\'.$request->gateway;
+        $gatewayClass = "App\\Gateways\\{$request->gateway}";
         /** @var \YiddisheKop\LaravelCommerce\Contracts\Gateway $gateway */
         $gateway = new $gatewayClass();
 
