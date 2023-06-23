@@ -5,6 +5,7 @@ namespace YiddisheKop\LaravelCommerce\Http\Controllers;
 use Illuminate\Http\Request;
 use YiddisheKop\LaravelCommerce\Facades\Cart;
 use YiddisheKop\LaravelCommerce\Models\OrderItem;
+use YiddisheKop\LaravelCommerce\Events\RemovedFromCart;
 
 class CartItemController extends Controller
 {

@@ -3,9 +3,16 @@
 namespace YiddisheKop\LaravelCommerce\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use YiddisheKop\LaravelCommerce\Events\RemovedFromCart;
 
 class OrderItem extends Model
 {
+    protected $dispatchesEvents = [
+        'deleted'      => RemovedFromCart::class,
+        'trashed'      => RemovedFromCart::class,
+        'forceDeleted' => RemovedFromCart::class,
+    ];
+
     public $timestamps = false;
 
     protected $guarded = [];
