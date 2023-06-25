@@ -2,10 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.1.0 (2023-06-23)
+
+-   Add `product_ids` column to `Offers` - it's now possible to limit an Offer to specific products
+-   Multiple Offers can now be applied on the same Order.
+
 ### 2.0.0 (2023-06-23)
 
 -   Remove php7.4 support
 -   Added events: `RemovedFromCart`, `CartEmptied`
+-   Override the `OrderItem` model in `commerce.php` config.
 
 ### 1.0.2 (2021-11-28)
 
