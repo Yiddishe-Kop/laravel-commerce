@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### 2.1.0 (2023-06-23)
+### 2.1.0 (2023-06-25)
 
 -   Add `product_ids` column to `Offers` - it's now possible to limit an Offer to specific products
 -   Multiple Offers can now be applied on the same Order.
