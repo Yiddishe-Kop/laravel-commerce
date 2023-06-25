@@ -5,19 +5,24 @@ use YiddisheKop\LaravelCommerce\Tests\Fixtures\Package;
 use YiddisheKop\LaravelCommerce\Tests\Fixtures\Product;
 
 beforeEach(function () {
+
+    $this->product1 = Product::create([
+        'title' => 'Mercedes S300',
+        'price' => 3000,
+    ]);
+    $this->product2 = Product::create([
+        'title' => 'Audi A8',
+        'price' => 2000,
+    ]);
+    $this->product3 = Package::create([
+        'title' => 'Hotel Weekend Package',
+        'price' => 4000,
+    ]);
+
     $this->cart
-        ->add(Product::create([
-            'title' => 'Mercedes S300',
-            'price' => 3000,
-        ]))
-        ->add(Product::create([
-            'title' => 'Audi A8',
-            'price' => 2000,
-        ]))
-        ->add(Package::create([
-            'title' => 'Hotel Weekend Package',
-            'price' => 4000,
-        ]));
+        ->add($this->product1)
+        ->add($this->product2)
+        ->add($this->product3);
 
     config([
         'commerce.shipping.calculator' => null,
@@ -35,6 +40,35 @@ test('Offers get applied to cart total', function () {
     $this->cart->calculateTotals();
 
     expect($this->cart->items_total)->toEqual(8500 * 100);
+});
+
+test('Offers can be limited to product_ids', function () {
+    Offer::create([
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 50,
+        'product_ids' => [$this->product2->id],
+    ]);
+
+    $this->cart->calculateTotals();
+
+    expect($this->cart->items_total)->toEqual(8000 * 100);
+});
+
+test('Multiple Offers are applied', function () {
+    Offer::create([
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 50,
+        'product_ids' => [$this->product1->id],
+    ]);
+    Offer::create([
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 75,
+        'product_ids' => [$this->product2->id],
+    ]);
+
+    $this->cart->calculateTotals();
+
+    expect($this->cart->items_total)->toEqual(6000 * 100);
 });
 
 test('Offers only get applied to specified product type', function () {

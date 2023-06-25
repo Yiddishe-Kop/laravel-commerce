@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 
-class CreateCouponsTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -32,4 +32,4 @@ class CreateCouponsTable extends Migration
     {
         Schema::dropIfExists('coupons');
     }
-}
+};

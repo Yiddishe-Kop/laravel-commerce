@@ -2,6 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
 
@@ -13,6 +14,7 @@ class Offer extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'product_ids' => 'array',
         'valid_from' => 'datetime',
         'valid_to'   => 'datetime',
     ];
@@ -32,40 +34,52 @@ class Offer extends Model
     /**
      * Get first available offer for the order
      */
-    public static function getFor(Order $order)
+    public static function getFor(Order $order): Collection
     {
         $productTypeCounts = $order->items
             ->groupBy('model_type')
             ->mapWithKeys(function ($item, $key) {
-                return [$key => $item->count()];
+                return [$key => $item->sum('quantity')];
             });
 
         $validOffers = collect();
 
-        $offers = self::valid()
+        self::valid()
             ->orderBy('min', 'desc')
-            ->get();
+            ->get()
+            ->each(function (self $offer) use ($order, $validOffers, $productTypeCounts) {
 
-        $offers->each(function ($offer) use ($validOffers, $productTypeCounts) {
-            if (! $offer->product_type) { // offer is valid for all product types
-                $validOffers->push($offer);
-
-                return;
-            } elseif ($productTypeCounts->has($offer->product_type)) { // the required product type is in the cart
-                $amountInCart = $productTypeCounts[$offer->product_type];
-                if ($amountInCart >= $offer->min) { // right amount in cart
-                    $validOffers->push($offer);
+                $productIds = collect($offer->product_ids);
+                if ($productIds->isNotEmpty() && ! $productIds->intersect($order->items->pluck('model_id'))->count()) {
+                    return;
                 }
-            }
-        });
 
-        $appliedOffer = $validOffers->first();
+                if (! $offer->product_type) { // offer is valid for all product types
+                    // offer is valid for all products
+                    $validOffers->push($offer);
 
-        return $appliedOffer;
+                    return;
+                } elseif ($productTypeCounts->has($offer->product_type)) { // the required product type is in the cart
+                    $amountInCart = $productTypeCounts[$offer->product_type];
+                    if ($amountInCart >= $offer->min) { // right amount in cart
+                        $validOffers->push($offer);
+                    }
+                }
+            });
+
+        // highest `min` first
+        return $validOffers->reverse();
     }
 
     public function isValidFor(OrderItem $item)
     {
+        $productIds = collect($this->product_ids);
+        if ($productIds->isNotEmpty()) {
+            if (! $productIds->contains($item->model_id)) {
+                return false;
+            }
+        }
+
         if (! $this->product_type) {
             return true;
         }

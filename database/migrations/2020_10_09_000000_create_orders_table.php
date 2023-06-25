@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use YiddisheKop\LaravelCommerce\Models\Order;
 
-class CreateOrdersTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
@@ -35,4 +35,4 @@ class CreateOrdersTable extends Migration
     {
         Schema::dropIfExists('orders');
     }
-}
+};

@@ -203,14 +203,18 @@ trait HandlesCartItems
             $this->save();
         }
 
-        $offer = Offer::getFor($this);
+        $offers = Offer::getFor($this);
 
-        $cartItems->each(function (OrderItem $item) use ($offer) {
+        $cartItems->each(function (OrderItem $item) use ($offers) {
             if (! $item->model) { // product has been deleted
                 return $item->delete(); // also remove from cart
             }
-            if ($offer && $offer->isValidFor($item)) {
-                $offer->apply($item);
+            if ($offers->isNotEmpty()) {
+                $offers->each(function ($offer) use ($item) {
+                  if ($offer->isValidFor($item)) {
+                    $offer->apply($item);
+                  }
+                });
             } else {
                 $item->update([
                     'title'    => $item->model->getTitle(),
