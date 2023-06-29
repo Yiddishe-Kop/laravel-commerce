@@ -15,14 +15,16 @@ class Offer extends Model
 
     protected $casts = [
         'product_ids' => 'array',
-        'valid_from' => 'datetime',
-        'valid_to'   => 'datetime',
+        'active'      => 'boolean',
+        'valid_from'  => 'datetime',
+        'valid_to'    => 'datetime',
     ];
 
     // scopes
     public function scopeValid($q)
     {
-        $q->where(function ($q) {
+        $q->where('active', true)
+        ->where(function ($q) {
             $q->where('valid_from', '<', now())
                 ->orWhereNull('valid_from');
         })->where(function ($q) {

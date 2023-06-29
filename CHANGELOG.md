@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 2.2.0 (2023-06-29)
+
+-   Add `active` column to `Offers` - it's now possible to deactivate Offers. The default value is `true` (for backwards compatibility).
+
 ### 2.1.0 (2023-06-25)
 
 -   Add `product_ids` column to `Offers` - it's now possible to limit an Offer to specific products

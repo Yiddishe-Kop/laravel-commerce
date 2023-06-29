@@ -42,6 +42,19 @@ test('Offers get applied to cart total', function () {
     expect($this->cart->items_total)->toEqual(8500 * 100);
 });
 
+test('inactive offer not applied', function () {
+    Offer::create([
+        'type'         => Offer::TYPE_PERCENTAGE,
+        'discount'     => 10,
+        'product_type' => Product::class,
+        'active'       => false,
+    ]);
+
+    $this->cart->calculateTotals();
+
+    expect($this->cart->items_total)->toEqual(9000 * 100);
+});
+
 test('Offers can be limited to product_ids', function () {
     Offer::create([
         'type'         => Offer::TYPE_PERCENTAGE,
