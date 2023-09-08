@@ -137,9 +137,11 @@ trait HandlesCartItems
         return $couponDiscount;
     }
 
-    public function calculateTotals(): self
+    public function calculateTotals(bool $refreshPrices = true): self
     {
-        $this->refreshItems();
+        if ($refreshPrices) {
+            $this->refreshItems();
+        }
 
         $itemsTotal = $this->getItemsTotal();
         $shippingTotal = $this->getShippingTotal();
