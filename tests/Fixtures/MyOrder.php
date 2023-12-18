@@ -9,7 +9,7 @@ class MyOrder extends Order implements OrderContract
 {
     protected $table = 'orders';
 
-    public function calculateTotals(): self
+    public function calculateTotals(bool $refreshPrices = true): self
     {
         // Overriden method: calculateTotals - everthing is free!
         $this->update([

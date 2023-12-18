@@ -148,12 +148,12 @@ trait HandlesCartItems
 
         if (config('commerce.coupon.include_tax')) {
             // calculate tax, then coupon
-            $taxTotal = $this->calculateTax($itemsTotal);
+            $taxTotal = $this->calculateTax($itemsTotal, $shippingTotal);
             $couponDiscount = $this->getCouponDiscount($itemsTotal + $taxTotal, $shippingTotal);
         } else {
             // calculate coupon, then tax
             $couponDiscount = $this->getCouponDiscount($itemsTotal, $shippingTotal);
-            $taxTotal = $this->calculateTax($itemsTotal, $couponDiscount);
+            $taxTotal = $this->calculateTax($itemsTotal, $shippingTotal, $couponDiscount);
         }
 
         // TODO: config('commerce.tax.included_in_prices')
@@ -173,17 +173,21 @@ trait HandlesCartItems
     /**
      *  Calculate tax_total
      */
-    public function calculateTax(&$itemsTotal, $couponDiscount = 0)
+    public function calculateTax(&$itemsTotal, &$shippingTotal, $couponDiscount = 0,)
     {
         $taxableAmount = $itemsTotal - $couponDiscount;
         if (config('commerce.tax.included_in_prices')) {
             $taxTotal = Vat::of($taxableAmount);
             $itemsTotal -= $taxTotal;
+
+            $shippingTax = Vat::of($shippingTotal);
+            $shippingTotal -= $shippingTax;
         } else {
             $taxTotal = round($taxableAmount * config('commerce.tax.rate')); // add vat
+            $shippingTax = round($shippingTotal * config('commerce.tax.rate')); // add vat
         }
 
-        return $taxTotal;
+        return $taxTotal + $shippingTax;
     }
 
     /**

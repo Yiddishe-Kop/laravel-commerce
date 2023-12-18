@@ -24,8 +24,8 @@ it('calculates the totals', function () {
     $this->cart->calculateTotals();
 
     $expectedItemsTotal = ((333 * 2) + (444 * 5)) * 100;
-    $expectedTaxTotal = Vat::for($expectedItemsTotal);
     $shipping = config('commerce.shipping.cost') * 100;
+    $expectedTaxTotal = Vat::for($expectedItemsTotal + $shipping);
 
     $this->assertEquals(
         $expectedItemsTotal,
