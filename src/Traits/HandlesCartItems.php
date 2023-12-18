@@ -173,7 +173,7 @@ trait HandlesCartItems
     /**
      *  Calculate tax_total
      */
-    public function calculateTax(&$itemsTotal, &$shippingTotal, $couponDiscount = 0,)
+    public function calculateTax(&$itemsTotal, &$shippingTotal, $couponDiscount = 0)
     {
         $taxableAmount = $itemsTotal - $couponDiscount;
         if (config('commerce.tax.included_in_prices')) {
