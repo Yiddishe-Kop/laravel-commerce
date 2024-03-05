@@ -132,7 +132,7 @@ trait HandlesCartItems
 
         config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
 
-        $couponDiscount = $this->coupon->calculateDiscount($originalPrice);
+        $couponDiscount = $this->coupon->calculateDiscount($originalPrice, $this->currency);
 
         return $couponDiscount;
     }

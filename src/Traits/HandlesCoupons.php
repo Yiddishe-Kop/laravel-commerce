@@ -83,16 +83,25 @@ trait HandlesCoupons
     /**
      * Calculate the amount to discount the Order
      */
-    public function calculateDiscount($originalPrice)
+    public function calculateDiscount($originalPrice, $currency = null)
     {
+
         if (! $this->isValid()) {
             return 0;
         }
         if (! is_null($this->max_uses) && $this->times_used >= $this->max_uses) {
             return 0;
         }
+
+        
+
         if ($this->type == Coupon::TYPE_FIXED) {
-            $discount = $this->discount;
+            // TODO: Better way of handling potential enum?
+            if (!is_string($currency) && $currency?->value) {
+                $currency = $currency->value;
+            }
+            $discount = data_get($this->fixed_discount_currencies, $currency, $this->discount);
+
         } elseif ($this->type == Coupon::TYPE_PERCENTAGE) {
             $discount = ($originalPrice / 100) * $this->discount;
         }
