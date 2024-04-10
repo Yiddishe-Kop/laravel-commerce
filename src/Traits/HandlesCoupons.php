@@ -2,6 +2,7 @@
 
 namespace YiddisheKop\LaravelCommerce\Traits;
 
+use BackedEnum;
 use YiddisheKop\LaravelCommerce\Models\Coupon;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
 use YiddisheKop\LaravelCommerce\Exceptions\CouponExpired;
@@ -93,11 +94,8 @@ trait HandlesCoupons
             return 0;
         }
 
-        
-
         if ($this->type == Coupon::TYPE_FIXED) {
-            // TODO: Better way of handling potential enum?
-            if (!is_string($currency) && $currency?->value) {
+            if ($currency instanceof BackedEnum) {
                 $currency = $currency->value;
             }
             $discount = data_get($this->fixed_discount_currencies, $currency, $this->discount);
