@@ -47,10 +47,10 @@ test('Can apply FIXED coupon to order', function () {
 
     expect($this->cart->coupon_id)->toBe($coupon->id);
     expect($this->cart->coupon_total)->toEqual($coupon->discount);
-    // shipping: 1200
-    // tax: 60000
     // itemsTotal: 300000
-    expect($this->cart->grand_total)->toEqual(361200 - 200);
+    // shipping: 1200
+    // tax: 60,240
+    expect($this->cart->grand_total)->toEqual(3_614_40 - 200);
 });
 
 test('Can apply FIXED coupon to order [config: exc. tax]', function () {
@@ -69,13 +69,36 @@ test('Can apply FIXED coupon to order [config: exc. tax]', function () {
 
     expect($this->cart->coupon->id)->toBe($coupon->id);
     expect($this->cart->coupon_total)->toEqual($coupon->discount);
-    // shipping: 1200
     // itemsTotal: 300000
-    // tax: 60000
-    $expectedTaxTotal = Vat::for($this->cart->items_total - $this->cart->coupon_total);
+    // shipping: 1200
+    // tax: 60,240
+    $expectedTaxTotal = Vat::for($this->cart->items_total + $this->cart->shipping_total - $this->cart->coupon_total);
 
     expect($this->cart->tax_total)->toEqual($expectedTaxTotal);
     expect($this->cart->grand_total)->toEqual($this->cart->items_total + $this->cart->shipping_total + $expectedTaxTotal - $this->cart->coupon_total);
+});
+
+test('Can apply FIXED coupon with fixed_discount_currencies', function () {
+    $coupon = Coupon::create([
+        'code'     => 'BLACK-FRIDAY-2021',
+        'type'     => Coupon::TYPE_FIXED,
+        'fixed_discount_currencies' => [
+            'USD' => 400,
+            'GBP' => 200,
+        ],
+        'discount' => 200,
+    ]);
+
+    $this->cart->applyCoupon($coupon->code);
+    $this->cart->calculateTotals();
+
+    $couponTotal = $coupon->fixed_discount_currencies['USD'];
+    expect($this->cart->coupon_id)->toBe($coupon->id);
+    expect($this->cart->coupon_total)->toEqual($couponTotal);
+    // itemsTotal: 300000
+    // shipping: 1200
+    // tax: 60,240
+    expect($this->cart->grand_total)->toEqual(3_614_40 - $couponTotal);
 });
 
 test('Can apply PERCENTAGE coupon to order', function () {
@@ -83,12 +106,12 @@ test('Can apply PERCENTAGE coupon to order', function () {
     $this->cart->calculateTotals();
 
     expect($this->cart->coupon->id)->toBe($this->coupon->id);
+    // itemsTotal: 300000
     // shipping: 1200
-    // itemsTotal: 361200
-    // expected coupon discount: 36120
-    // tax: 60000
-    expect($this->cart->coupon_total)->toEqual(36120);
-    expect($this->cart->grand_total)->toEqual(361200 - 36120);
+    // tax: 60,240
+    // expected coupon discount: 42,240
+    expect($this->cart->coupon_total)->toEqual(36144);
+    expect($this->cart->grand_total)->toEqual(361440 - 36144);
 });
 
 test('Can apply PERCENTAGE coupon to order  [config: exc. tax]', function () {
@@ -102,7 +125,7 @@ test('Can apply PERCENTAGE coupon to order  [config: exc. tax]', function () {
     expect($this->cart->coupon->id)->toBe($this->coupon->id);
 
     $expectedCouponTotal = ($this->cart->items_total + $this->cart->shipping_total) * 0.1;
-    $expectedTaxTotal = Vat::for($this->cart->items_total - $this->cart->coupon_total);
+    $expectedTaxTotal = Vat::for($this->cart->items_total + $this->cart->shipping_total - $this->cart->coupon_total);
     expect($this->cart->coupon_total)->toEqual($expectedCouponTotal);
     expect($this->cart->tax_total)->toEqual($expectedTaxTotal);
     expect($this->cart->grand_total)->toEqual($this->cart->items_total + $this->cart->tax_total + $this->cart->shipping_total - $expectedCouponTotal);

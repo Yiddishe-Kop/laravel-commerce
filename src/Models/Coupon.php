@@ -18,6 +18,7 @@ class Coupon extends Model
     protected $casts = [
         'valid_from' => 'datetime',
         'valid_to'   => 'datetime',
+        'fixed_discount_currencies' => 'array',
     ];
 
     public function product(): MorphTo
