@@ -128,6 +128,10 @@ trait HandlesCartItems
             $originalPrice = $this->items
                 ->filter(fn ($item) => $item->model_type == $this->coupon->product_type && $item->model_id == $this->coupon->product_id)
                 ->sum(fn ($item) => $item->line_total);
+            if (!config('commerce.tax.included_in_prices')) {
+                $originalPrice = Vat::add($originalPrice); // apply coupon to (price + tax)
+            }
+            $shippingTotal = 0;
         }
 
         config('commerce.coupon.include_shipping') && $originalPrice += $shippingTotal;
