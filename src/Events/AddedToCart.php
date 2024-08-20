@@ -7,6 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use YiddisheKop\LaravelCommerce\Contracts\Order;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use YiddisheKop\LaravelCommerce\Contracts\Purchasable;
+use YiddisheKop\LaravelCommerce\Models\OrderItem;
 
 class AddedToCart
 {
@@ -16,7 +17,8 @@ class AddedToCart
 
     public function __construct(
         public Order $order,
-        public Purchasable $product
+        public Purchasable $product,
+        public OrderItem $orderItem,
     ) {
     }
 }

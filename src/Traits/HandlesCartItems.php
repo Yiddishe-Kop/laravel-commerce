@@ -35,7 +35,7 @@ trait HandlesCartItems
             return $this;
         }
 
-        $this->items()->create([
+        $orderItem = $this->items()->create([
             'model_id'   => $product->id,
             'model_type' => get_class($product),
             'title'      => $product->getTitle(),
@@ -44,7 +44,7 @@ trait HandlesCartItems
             'options'    => $options,
         ]);
 
-        event(new AddedToCart($this, $product));
+        event(new AddedToCart($this, $product, $orderItem));
 
         return $this;
     }
